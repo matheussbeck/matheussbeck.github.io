@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matheus Sousa Beck | Data Solutions Engineer</title>
+    
+    <style>
+        /* === CSS VARIABLES === */
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --dark-bg: #0f172a;
+            --light-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #f8fafc;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            
+            /* Dark theme */
+            --bg-color: var(--dark-bg);
+            --text-color: var(--text-light);
+            --card-bg: #1e293b;
+            --border: #334155;
+        }
+        
+        [data-theme="light"] {
+            --bg-color: var(--light-bg);
+            --text-color: var(--text-primary);
+            --card-bg: #ffffff;
+            --border: var(--border-color);
+            --code-bg: #f8fafc;
+        }
+        
+        /* === RESET & BASE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+        
+        /* === LAYOUT GRID === */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+        
+        .grid-3 {
+            grid-template-columns: 1fr;
+        }
+        
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* === HEADER === */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: none;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+        
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .language-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .language-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        /* === PROGRESS BAR === */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+        
+        /* === HERO SECTION === */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23334155" fill-opacity="0.1"><circle cx="30" cy="30" r="1"/></g></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero-content {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+        
+        .hero-text h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-text .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-text .description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .cta-button.secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* === CODE DISPLAY === */
+        .code-display {
+            background: var(--code-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .code-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .code-dot:nth-child(1) { background: #ef4444; }
+        .code-dot:nth-child(2) { background: #f59e0b; }
+        .code-dot:nth-child(3) { background: var(--success-color); }
+        
+        .code-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-content {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #e2e8f0;
+        }
+        
+        .code-line {
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards;
+            position: relative;
+        }
+        
+        .code-line::before {
+            content: counter(line-number);
+            counter-increment: line-number;
+            color: var(--text-secondary);
+            margin-right: 1rem;
+            display: inline-block;
+            width: 2rem;
+            text-align: right;
+        }
+        
+        .code-content {
+            counter-reset: line-number;
+        }
+        
+        .code-line:nth-child(1) { animation-delay: 0.1s; }
+        .code-line:nth-child(2) { animation-delay: 0.3s; }
+        .code-line:nth-child(3) { animation-delay: 0.5s; }
+        .code-line:nth-child(4) { animation-delay: 0.7s; }
+        .code-line:nth-child(5) { animation-delay: 0.9s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .keyword { color: #8b5cf6; font-weight: bold; }
+        .string { color: #10b981; }
+        .comment { color: #6b7280; font-style: italic; }
+        .function { color: #3b82f6; }
+        .number { color: #f59e0b; }
+        .operator { color: #ef4444; }
+        
+        /* === SECTIONS === */
+        .section {
+            padding: 5rem 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* === TIMELINE === */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            padding: 0 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            top: 1rem;
+            border: 4px solid var(--bg-color);
+            box-shadow: 0 0 0 4px var(--primary-color);
+        }
+        
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            margin-left: 3rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 2rem;
+            }
+            
+            .timeline-item::before {
+                left: 2rem;
+            }
+            
+            .timeline-content {
+                margin-left: 4rem;
+            }
+        }
+        
+        /* === TERMINAL SIMULATOR === */
+        .terminal-simulator {
+            background: #0d1117;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid #30363d;
+        }
+        
+        .terminal-header {
+            background: #21262d;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .terminal-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .terminal-tab {
+            background: #0d1117;
+            color: #7d8590;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #30363d;
+            border-bottom: none;
+        }
+        
+        .terminal-tab.active {
+            background: #0d1117;
+            color: #f0f6fc;
+            border-color: #f78166;
+        }
+        
+        .terminal-controls {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .terminal-btn {
+            background: none;
+            border: 1px solid #30363d;
+            color: #7d8590;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .terminal-btn:hover {
+            color: #f0f6fc;
+            border-color: #f78166;
+        }
+        
+        .terminal-content {
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #f0f6fc;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+        }
+        
+        .terminal-prompt {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+        
+        .terminal-command {
+            color: #10b981;
+        }
+        
+        .terminal-output {
+            color: #f0f6fc;
+        }
+        
+        .terminal-success {
+            color: #3fb950;
+        }
+        
+        .terminal-warning {
+            color: #d29922;
+        }
+        
+        .terminal-error {
+            color: #f85149;
+        }
+        
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #f0f6fc;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* === PROJECT SHOWCASE === */
+        .project-showcase {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .project-showcase:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+        }
+        
+        .project-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .project-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .project-nav {
+            display: flex;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .project-nav-item {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-right: 1px solid var(--border);
+        }
+        
+        .project-nav-item:last-child {
+            border-right: none;
+        }
+        
+        .project-nav-item.active {
+            background: var(--card-bg);
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+            min-height: 300px;
+        }
+        
+        .project-demo {
+            background: var(--bg-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        /* === TECH BADGES === */
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tech-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        /* === BLOG SECTION === */
+        .blog-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .blog-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .blog-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .blog-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* === CONTACT FORM === */
+        .contact-form {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            transform: translateX(5px);
+            border-color: var(--primary-color);
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        /* === MOBILE RESPONSIVITY === */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .hero {
+                padding-top: 100px;
+            }
+            
+            .hero-content {
+                text-align: center;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+            
+            .cta-group {
+                justify-content: center;
+            }
+            
+            .nav-controls {
+                gap: 0.5rem;
+            }
+        }
+        
+        /* === SCROLL ANIMATIONS === */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s ease;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s ease;
+        }
+        
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* === MODAL === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--error-color);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body data-theme="dark" data-lang="pt">
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Matheus Beck</div>
+            <ul class="nav-links">
+                <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                <li><a href="#timeline" data-i18n="nav.timeline">Timeline</a></li>
+                <li><a href="#data-engineering" data-i18n="nav.dataEngineering">Data Engineering</a></li>
+                <li><a href="#fullstack" data-i18n="nav.fullstack">Python Fullstack</a></li>
+                <li><a href="#blog" data-i18n="nav.blog">Blog</a></li>
+                <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button class="language-toggle" id="languageToggle">
+                    <span id="currentLang">🇧🇷 PT</span>
+                </button>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="grid hero-content">
+                <div class="hero-text slide-in-left">
+                    <h1 id="typewriter">Matheus Sousa Beck</h1>
+                    <p class="subtitle" data-i18n="hero.subtitle">Data Solutions Engineer • Python Developer • Full Stack</p>
+                    <p class="description" data-i18n="hero.description">
+                        Desenvolvendo soluções robustas na <strong>RAÍZEN</strong>, maior empresa de energia do Brasil. 
+                        Especializado em arquitetura de dados, automação empresarial e aplicações de alta disponibilidade.
+                        <strong>800% de melhoria em performance</strong> • <strong>5.000+ horas economizadas mensalmente</strong> • <strong>97%+ uptime</strong>
+                    </p>
+                    <div class="cta-group">
+                        <a href="#timeline" class="cta-button" data-i18n="hero.cta1">Explore meus projetos</a>
+                        <a href="#contact" class="cta-button secondary" data-i18n="hero.cta2">Entre em contato</a>
+                    </div>
+                </div>
+                
+                <div class="code-display slide-in-right">
+                    <div class="code-header">
+                        <div class="code-dots">
+                            <div class="code-dot"></div>
+                            <div class="code-dot"></div>
+                            <div class="code-dot"></div>
+                        </div>
+                        <div class="code-title">cia_bot_pipeline.py</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div>
+                        <div class="code-line"><span class="keyword">from</span> azure <span class="keyword">import</span> parquet_engine</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="keyword">def</span> <span class="function">cia_automation_suite</span>():</div>
+                        <div class="code-line">    <span class="comment"># 135+ automations running 24/7</span></div>
+                        <div class="code-line">    processes <span class="operator">=</span> <span class="function">load_automation_stack</span>()</div>
+                        <div class="code-line">    <span class="keyword">for</span> script <span class="keyword">in</span> processes:</div>
+                        <div class="code-line">        <span class="function">watchdog_monitor</span>(script)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in" data-i18n="timeline.title">Minha Jornada na RAÍZEN</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3 data-i18n="timeline.current.title">Data Solutions Engineer • RAÍZEN • Atual</h3>
+                        <p><strong data-i18n="timeline.current.subtitle">Líder técnico em soluções críticas para maior empresa de energia do Brasil</strong></p>
+                        <p data-i18n="timeline.current.description">Responsável pelo desenvolvimento end-to-end de aplicações críticas e soluções de dados, 
+                        focando em excelência operacional e transformação digital. Gerencio ecosistema de 135+ automações 
+                        que economizam 5.000+ horas mensais em operação 24/7 com 200+ analistas.</p>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Azure</span>
+                            <span class="tech-badge">Parquet</span>
+                            <span class="tech-badge">Power BI</span>
+                            <span class="tech-badge">Watchdog Architecture</span>
+                            <span class="tech-badge">Microsoft Graph API</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3 data-i18n="timeline.education.title">Engenharia de Software • Wyden • Em Curso (2024-2028)</h3>
+                        <p><strong data-i18n="timeline.education.subtitle">Aplicando fundamentos teóricos em projetos de produção</strong></p>
+                        <p data-i18n="timeline.education.description">Combinando aprendizado acadêmico com experiência prática em sistemas de alta escala. 
+                        Aplicando conceitos de arquitetura de software, padrões de projeto e engenharia de dados 
+                        em soluções reais na RAÍZEN.</p>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Software Architecture</span>
+                            <span class="tech-badge">Design Patterns</span>
+                            <span class="tech-badge">System Design</span>
+                            <span class="tech-badge">Data Engineering</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3 data-i18n="timeline.previous.title">Experiência Anterior: Líder Alimentos + RAÍZEN (2016-2022)</h3>
+                        <p><strong data-i18n="timeline.previous.subtitle">Fundamentos em análise de dados e otimização logística</strong></p>
+                        <p data-i18n="timeline.previous.description">6+ anos otimizando operações através de análise de dados e planejamento estratégico. 
+                        Reduzi perdas de transporte de leite em 60%, aumentei volume transportado em 16%, 
+                        e desenvolvi dashboards analíticos para tomada de decisão baseada em dados.</p>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Data Analysis</span>
+                            <span class="tech-badge">Logistics Optimization</span>
+                            <span class="tech-badge">KPI Development</span>
+                            <span class="tech-badge">Strategic Planning</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Engineering Section -->
+    <section id="data-engineering" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in" data-i18n="dataEngineering.title">Data Engineering Showcase</h2>
+            <p class="section-subtitle fade-in" data-i18n="dataEngineering.subtitle">
+                Arquitetura de dados em escala empresarial com impacto mensurável de negócio
+            </p>
+            
+            <div class="grid grid-2">
+                <div class="fade-in">
+                    <div class="terminal-simulator">
+                        <div class="terminal-header">
+                            <div class="terminal-tabs">
+                                <div class="terminal-tab active" data-tab="parquet" data-i18n="terminal.tab1">Data Warehouse</div>
+                                <div class="terminal-tab" data-tab="cia" data-i18n="terminal.tab2">CIA BOT Suite</div>
+                                <div class="terminal-tab" data-tab="telegram" data-i18n="terminal.tab3">Telegram Bot</div>
+                            </div>
+                            <div class="terminal-controls">
+                                <button class="terminal-btn" onclick="runTerminalDemo()">▶ Run</button>
+                                <button class="terminal-btn" onclick="clearTerminal()">Clear</button>
+                            </div>
+                        </div>
+                        <div class="terminal-content" id="terminalOutput">
+                            <div class="terminal-line">
+                                <span class="terminal-prompt">raizen@azure-production:~$</span> 
+                                <span class="terminal-cursor"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-color);" data-i18n="dataEngineering.resultsTitle">Resultados de Impacto Real</h3>
+                    <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+                        <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                            <div style="font-size: 2rem; color: var(--success-color); font-weight: bold;">800%</div>
+                            <div style="color: var(--text-secondary);" data-i18n="dataEngineering.result1">Melhoria performance Data Warehouse</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                            <div style="font-size: 2rem; color: var(--warning-color); font-weight: bold;">5,000+</div>
+                            <div style="color: var(--text-secondary);" data-i18n="dataEngineering.result2">Horas economizadas mensalmente</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                            <div style="font-size: 2rem; color: var(--primary-color); font-weight: bold;">97%+</div>
+                            <div style="color: var(--text-secondary);" data-i18n="dataEngineering.result3">Uptime sistemas críticos</div>
+                        </div>
+                    </div>
+                    <div class="tech-badges">
+                        <span class="tech-badge">Apache Parquet</span>
+                        <span class="tech-badge">Microsoft Azure</span>
+                        <span class="tech-badge">Python ETL</span>
+                        <span class="tech-badge">Power BI</span>
+                        <span class="tech-badge">Telegram API</span>
+                        <span class="tech-badge">Watchdog</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Python Fullstack Section -->
+    <section id="fullstack" class="section" style="background: var(--card-bg);">
+        <div class="container">
+            <h2 class="section-title fade-in" data-i18n="fullstack.title">Python Fullstack Portfolio</h2>
+            <p class="section-subtitle fade-in" data-i18n="fullstack.subtitle">
+                Aplicações web de alta disponibilidade que transformaram operações na RAÍZEN
+            </p>
+            
+            <div class="grid grid-3">
+                <div class="project-showcase scale-in">
+                    <div class="project-header">
+                        <div class="project-title">🚚 <span data-i18n="projects.dashboard.title">Dashboard CCT Caminhões</span></div>
+                        <div class="project-status">Live 24/7</div>
+                    </div>
+                    <div class="project-nav">
+                        <button class="project-nav-item active" data-project="dashboard" data-view="overview" data-i18n="projects.nav.overview">Overview</button>
+                        <button class="project-nav-item" data-project="dashboard" data-view="demo" data-i18n="projects.nav.results">Results</button>
+                        <button class="project-nav-item" data-project="dashboard" data-view="tech" data-i18n="projects.nav.tech">Tech</button>
+                    </div>
+                    <div class="project-content" id="dashboard-content">
+                        <p><strong data-i18n="projects.dashboard.subtitle">Dashboard de Monitoramento Logístico em Tempo Real</strong></p>
+                        <p data-i18n="projects.dashboard.description">Sistema web para visibilidade completa do fluxo logístico, rastreando atrasos de caminhões 
+                        e otimizando rotas. Inclui módulo de performance industrial e autonomia para tomada de decisão estratégica.</p>
+                        <div class="project-demo" style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <div style="color: var(--success-color);">● <span data-i18n="projects.dashboard.status">Sistema Online</span></div>
+                                <div><strong>8% <span data-i18n="projects.dashboard.reduction">redução</span></strong> <span data-i18n="projects.dashboard.metric">índice falta caminhões</span></div>
+                            </div>
+                            <div style="background: var(--success-color); height: 4px; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);" data-i18n="projects.dashboard.features">
+                                Base de dados confiável • Performance otimizada • Multi-filtros
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-showcase scale-in">
+                    <div class="project-header">
+                        <div class="project-title">🔧 <span data-i18n="projects.maintenance.title">Sistema Manutenções</span></div>
+                        <div class="project-status">Production</div>
+                    </div>
+                    <div class="project-nav">
+                        <button class="project-nav-item active" data-project="maintenance" data-view="overview" data-i18n="projects.nav.overview">Overview</button>
+                        <button class="project-nav-item" data-project="maintenance" data-view="demo" data-i18n="projects.nav.results">Results</button>
+                        <button class="project-nav-item" data-project="maintenance" data-view="tech" data-i18n="projects.nav.tech">Tech</button>
+                    </div>
+                    <div class="project-content" id="maintenance-content">
+                        <p><strong data-i18n="projects.maintenance.subtitle">Intercomunicação de Manutenções Integrada</strong></p>
+                        <p data-i18n="projects.maintenance.description">Módulo incorporado nos dashboards operacionais para agilizar identificação e resolução 
+                        de manutenções corretivas. Notificações em tempo real e tracking completo.</p>
+                        <div class="project-demo" style="margin-top: 1rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
+                                <div><strong>82% <span data-i18n="projects.maintenance.reduction1">redução</span></strong> <span data-i18n="projects.maintenance.metric1">tempo OS</span></div>
+                                <div><strong>32% <span data-i18n="projects.maintenance.improvement">melhoria</span></strong> <span data-i18n="projects.maintenance.metric2">programação</span></div>
+                                <div>📱 <span data-i18n="projects.maintenance.feature1">Notificações instantâneas</span></div>
+                                <div>📊 <span data-i18n="projects.maintenance.feature2">Histórico completo</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-showcase scale-in">
+                    <div class="project-header">
+                        <div class="project-title">📋 <span data-i18n="projects.dto.title">Portal DTO</span></div>
+                        <div class="project-status">100% Adoption</div>
+                    </div>
+                    <div class="project-nav">
+                        <button class="project-nav-item active" data-project="dto" data-view="overview" data-i18n="projects.nav.overview">Overview</button>
+                        <button class="project-nav-item" data-project="dto" data-view="demo" data-i18n="projects.nav.results">Results</button>
+                        <button class="project-nav-item" data-project="dto" data-view="tech" data-i18n="projects.nav.tech">Tech</button>
+                    </div>
+                    <div class="project-content" id="dto-content">
+                        <p><strong data-i18n="projects.dto.subtitle">Portal de Avaliação Técnica</strong></p>
+                        <p data-i18n="projects.dto.description">Ferramenta web para realização de avaliações técnicas e processuais de analistas, 
+                        gerando histórico e dados visuais para análise de performance.</p>
+                        <div class="project-demo" style="margin-top: 1rem;">
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span data-i18n="projects.dto.adoption">Taxa de Adoção</span>
+                                    <span style="color: var(--success-color);"><strong>100%</strong></span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span data-i18n="projects.dto.digitized">Avaliações Digitalizadas</span>
+                                    <span data-i18n="projects.dto.all">Todas</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span data-i18n="projects.dto.analytics">Analytics Visuais</span>
+                                    <span>✓ <span data-i18n="projects.dto.implemented">Implementado</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-2" style="margin-top: 3rem;">
+                <div class="project-showcase scale-in">
+                    <div class="project-header">
+                        <div class="project-title">🔒 <span data-i18n="projects.links.title">Portal Geração Links</span></div>
+                        <div class="project-status">Secure</div>
+                    </div>
+                    <div class="project-content">
+                        <p><strong data-i18n="projects.links.subtitle">Compartilhamento Seguro de Documentos</strong></p>
+                        <p data-i18n="projects.links.description">Ferramenta web integrada ao SharePoint via Microsoft Graph API para compartilhamento 
+                        controlado de dados sensíveis com compliance total.</p>
+                        <div class="tech-badges">
+                            <span class="tech-badge">Microsoft Graph API</span>
+                            <span class="tech-badge">OAuth 2.0</span>
+                            <span class="tech-badge">SharePoint</span>
+                            <span class="tech-badge">Security Compliance</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-showcase scale-in">
+                    <div class="project-header">
+                        <div class="project-title">📱 <span data-i18n="projects.telegram.title">Bot Telegram</span></div>
+                        <div class="project-status">1000+ Daily</div>
+                    </div>
+                    <div class="project-content">
+                        <p><strong data-i18n="projects.telegram.subtitle">Bot de Consultas Operacionais</strong></p>
+                        <p data-i18n="projects.telegram.description">Bot Python para consultas de despachos em tempo real, processando 1000+ utilizações diárias 
+                        com geração automática de relatórios visuais e persistência otimizada.</p>
+                        <div class="project-demo" style="margin-top: 1rem;">
+                            <div style="font-size: 0.875rem;">
+                                <div>📊 <strong>65% <span data-i18n="projects.telegram.reduction">redução</span></strong> <span data-i18n="projects.telegram.metric1">tempo decisão operacional</span></div>
+                                <div>🏭 <strong>26 <span data-i18n="projects.telegram.units">unidades</span></strong> <span data-i18n="projects.telegram.metric2">agrícolas atendidas</span></div>
+                                <div>⚡ <span data-i18n="projects.telegram.feature">Consultas instantâneas via mobile</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in" data-i18n="blog.title">Insights Técnicos</h2>
+            <p class="section-subtitle fade-in" data-i18n="blog.subtitle">
+                Compartilhando aprendizados de projetos reais na RAÍZEN
+            </p>
+            
+            <div class="grid grid-3">
+                <div class="blog-card fade-in" onclick="openBlogPost('parquet-optimization')">
+                    <div class="blog-image">⚡</div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span data-i18n="blog.post1.date">Dezembro 2024</span>
+                            <span data-i18n="blog.post1.read">8 min read</span>
+                            <span>Data Engineering</span>
+                        </div>
+                        <h3 class="blog-title" data-i18n="blog.post1.title">Como Alcancei 800% de Melhoria com Parquet no Azure</h3>
+                        <p class="blog-excerpt" data-i18n="blog.post1.excerpt">
+                            Deep dive na arquitetura de Data Warehouse que transformou nossos dashboards Power BI 
+                            de minutos para segundos de carregamento, usando técnicas avançadas de otimização.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="blog-card fade-in" onclick="openBlogPost('cia-automation')">
+                    <div class="blog-image">🤖</div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span data-i18n="blog.post2.date">Novembro 2024</span>
+                            <span data-i18n="blog.post2.read">10 min read</span>
+                            <span>Automation</span>
+                        </div>
+                        <h3 class="blog-title" data-i18n="blog.post2.title">CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais</h3>
+                        <p class="blog-excerpt" data-i18n="blog.post2.excerpt">
+                            Como arquitetei e implementei um ecossistema de automação em escala empresarial 
+                            que revolucionou a operação 24/7 da RAÍZEN com impacto mensurável de negócio.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="blog-card fade-in" onclick="openBlogPost('watchdog-architecture')">
+                    <div class="blog-image">🔄</div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span data-i18n="blog.post3.date">Outubro 2024</span>
+                            <span data-i18n="blog.post3.read">7 min read</span>
+                            <span>System Architecture</span>
+                        </div>
+                        <h3 class="blog-title" data-i18n="blog.post3.title">Watchdog Architecture: 97%+ Uptime em Sistemas Críticos</h3>
+                        <p class="blog-excerpt" data-i18n="blog.post3.excerpt">
+                            Estratégias de arquitetura resiliente que transformaram sistemas instáveis em 
+                            soluções de alta disponibilidade com auto-recuperação e monitoramento proativo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section" style="background: var(--card-bg);">
+        <div class="container">
+            <h2 class="section-title fade-in" data-i18n="contact.title">Vamos Construir Algo Juntos</h2>
+            <p class="section-subtitle fade-in" data-i18n="contact.subtitle">
+                Interessado em soluções robustas de Data Engineering ou Python Fullstack? Vamos conversar!
+            </p>
+            
+            <div class="grid grid-2">
+                <div class="contact-form fade-in">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.form.name">Nome</label>
+                            <input type="text" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.form.company">Empresa</label>
+                            <input type="text" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.form.message">Mensagem</label>
+                            <textarea class="form-input form-textarea" required data-i18n-placeholder="contact.form.placeholder"></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;" data-i18n="contact.form.submit">Enviar Mensagem</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info fade-in">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>matheussbeck@outlook.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">💼</div>
+                        <div>
+                            <h4>LinkedIn</h4>
+                            <p>linkedin.com/in/matheussousabeck</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">💻</div>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p>github.com/matheussbeck</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div>
+                            <h4 data-i18n="contact.phone">Telefone</h4>
+                            <p>+55 11 96320-8908</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">🌍</div>
+                        <div>
+                            <h4 data-i18n="contact.location.title">Localização</h4>
+                            <p data-i18n="contact.location.value">Piracicaba, São Paulo • Brasil</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Blog Posts -->
+    <div class="modal" id="blogModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeBlogPost()">&times;</button>
+            <div id="blogPostContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === INTERNATIONALIZATION (i18n) ===
+        const translations = {
+            pt: {
+                nav: {
+                    home: 'Home',
+                    timeline: 'Timeline',
+                    dataEngineering: 'Data Engineering',
+                    fullstack: 'Python Fullstack',
+                    blog: 'Blog',
+                    contact: 'Contato'
+                },
+                hero: {
+                    subtitle: 'Data Solutions Engineer • Python Developer • Full Stack',
+                    description: 'Desenvolvendo soluções robustas na <strong>RAÍZEN</strong>, maior empresa de energia do Brasil. Especializado em arquitetura de dados, automação empresarial e aplicações de alta disponibilidade.<br><strong>800% de melhoria em performance</strong> • <strong>5.000+ horas economizadas mensalmente</strong> • <strong>97%+ uptime</strong>',
+                    cta1: 'Explore meus projetos',
+                    cta2: 'Entre em contato'
+                },
+                timeline: {
+                    title: 'Minha Jornada na RAÍZEN',
+                    current: {
+                        title: 'Data Solutions Engineer • RAÍZEN • Atual',
+                        subtitle: 'Líder técnico em soluções críticas para maior empresa de energia do Brasil',
+                        description: 'Responsável pelo desenvolvimento end-to-end de aplicações críticas e soluções de dados, focando em excelência operacional e transformação digital. Gerencio ecosistema de 135+ automações que economizam 5.000+ horas mensais em operação 24/7 com 200+ analistas.'
+                    },
+                    education: {
+                        title: 'Engenharia de Software • Wyden • Em Curso (2024-2028)',
+                        subtitle: 'Aplicando fundamentos teóricos em projetos de produção',
+                        description: 'Combinando aprendizado acadêmico com experiência prática em sistemas de alta escala. Aplicando conceitos de arquitetura de software, padrões de projeto e engenharia de dados em soluções reais na RAÍZEN.'
+                    },
+                    previous: {
+                        title: 'Experiência Anterior: Líder Alimentos + RAÍZEN (2016-2022)',
+                        subtitle: 'Fundamentos em análise de dados e otimização logística',
+                        description: '6+ anos otimizando operações através de análise de dados e planejamento estratégico. Reduzi perdas de transporte de leite em 60%, aumentei volume transportado em 16%, e desenvolvi dashboards analíticos para tomada de decisão baseada em dados.'
+                    }
+                },
+                dataEngineering: {
+                    title: 'Data Engineering Showcase',
+                    subtitle: 'Arquitetura de dados em escala empresarial com impacto mensurável de negócio',
+                    resultsTitle: 'Resultados de Impacto Real',
+                    result1: 'Melhoria performance Data Warehouse',
+                    result2: 'Horas economizadas mensalmente',
+                    result3: 'Uptime sistemas críticos'
+                },
+                terminal: {
+                    tab1: 'Data Warehouse',
+                    tab2: 'CIA BOT Suite',
+                    tab3: 'Telegram Bot'
+                },
+                fullstack: {
+                    title: 'Python Fullstack Portfolio',
+                    subtitle: 'Aplicações web de alta disponibilidade que transformaram operações na RAÍZEN'
+                },
+                projects: {
+                    nav: {
+                        overview: 'Overview',
+                        results: 'Results',
+                        tech: 'Tech'
+                    },
+                    dashboard: {
+                        title: 'Dashboard CCT Caminhões',
+                        subtitle: 'Dashboard de Monitoramento Logístico em Tempo Real',
+                        description: 'Sistema web para visibilidade completa do fluxo logístico, rastreando atrasos de caminhões e otimizando rotas. Inclui módulo de performance industrial e autonomia para tomada de decisão estratégica.',
+                        status: 'Sistema Online',
+                        reduction: 'redução',
+                        metric: 'índice falta caminhões',
+                        features: 'Base de dados confiável • Performance otimizada • Multi-filtros'
+                    },
+                    maintenance: {
+                        title: 'Sistema Manutenções',
+                        subtitle: 'Intercomunicação de Manutenções Integrada',
+                        description: 'Módulo incorporado nos dashboards operacionais para agilizar identificação e resolução de manutenções corretivas. Notificações em tempo real e tracking completo.',
+                        reduction1: 'redução',
+                        improvement: 'melhoria',
+                        metric1: 'tempo OS',
+                        metric2: 'programação',
+                        feature1: 'Notificações instantâneas',
+                        feature2: 'Histórico completo'
+                    },
+                    dto: {
+                        title: 'Portal DTO',
+                        subtitle: 'Portal de Avaliação Técnica',
+                        description: 'Ferramenta web para realização de avaliações técnicas e processuais de analistas, gerando histórico e dados visuais para análise de performance.',
+                        adoption: 'Taxa de Adoção',
+                        digitized: 'Avaliações Digitalizadas',
+                        all: 'Todas',
+                        analytics: 'Analytics Visuais',
+                        implemented: 'Implementado'
+                    },
+                    links: {
+                        title: 'Portal Geração Links',
+                        subtitle: 'Compartilhamento Seguro de Documentos',
+                        description: 'Ferramenta web integrada ao SharePoint via Microsoft Graph API para compartilhamento controlado de dados sensíveis com compliance total.'
+                    },
+                    telegram: {
+                        title: 'Bot Telegram',
+                        subtitle: 'Bot de Consultas Operacionais',
+                        description: 'Bot Python para consultas de despachos em tempo real, processando 1000+ utilizações diárias com geração automática de relatórios visuais e persistência otimizada.',
+                        reduction: 'redução',
+                        metric1: 'tempo decisão operacional',
+                        units: 'unidades',
+                        metric2: 'agrícolas atendidas',
+                        feature: 'Consultas instantâneas via mobile'
+                    }
+                },
+                blog: {
+                    title: 'Insights Técnicos',
+                    subtitle: 'Compartilhando aprendizados de projetos reais na RAÍZEN',
+                    post1: {
+                        date: 'Dezembro 2024',
+                        read: '8 min read',
+                        title: 'Como Alcancei 800% de Melhoria com Parquet no Azure',
+                        excerpt: 'Deep dive na arquitetura de Data Warehouse que transformou nossos dashboards Power BI de minutos para segundos de carregamento, usando técnicas avançadas de otimização.'
+                    },
+                    post2: {
+                        date: 'Novembro 2024',
+                        read: '10 min read',
+                        title: 'CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais',
+                        excerpt: 'Como arquitetei e implementei um ecossistema de automação em escala empresarial que revolucionou a operação 24/7 da RAÍZEN com impacto mensurável de negócio.'
+                    },
+                    post3: {
+                        date: 'Outubro 2024',
+                        read: '7 min read',
+                        title: 'Watchdog Architecture: 97%+ Uptime em Sistemas Críticos',
+                        excerpt: 'Estratégias de arquitetura resiliente que transformaram sistemas instáveis em soluções de alta disponibilidade com auto-recuperação e monitoramento proativo.'
+                    }
+                },
+                contact: {
+                    title: 'Vamos Construir Algo Juntos',
+                    subtitle: 'Interessado em soluções robustas de Data Engineering ou Python Fullstack? Vamos conversar!',
+                    form: {
+                        name: 'Nome',
+                        company: 'Empresa',
+                        message: 'Mensagem',
+                        placeholder: 'Conte-me sobre seu projeto ou oportunidade...',
+                        submit: 'Enviar Mensagem'
+                    },
+                    phone: 'Telefone',
+                    location: {
+                        title: 'Localização',
+                        value: 'Piracicaba, São Paulo • Brasil'
+                    }
+                }
+            },
+            en: {
+                nav: {
+                    home: 'Home',
+                    timeline: 'Timeline',
+                    dataEngineering: 'Data Engineering',
+                    fullstack: 'Python Fullstack',
+                    blog: 'Blog',
+                    contact: 'Contact'
+                },
+                hero: {
+                    subtitle: 'Data Solutions Engineer • Python Developer • Full Stack',
+                    description: 'Building robust solutions at <strong>RAÍZEN</strong>, Brazil\'s largest energy company. Specialized in data architecture, enterprise automation, and high-availability applications.<br><strong>800% performance improvement</strong> • <strong>5,000+ hours saved monthly</strong> • <strong>97%+ uptime</strong>',
+                    cta1: 'Explore my projects',
+                    cta2: 'Get in touch'
+                },
+                timeline: {
+                    title: 'My Journey at RAÍZEN',
+                    current: {
+                        title: 'Data Solutions Engineer • RAÍZEN • Current',
+                        subtitle: 'Technical leader for critical solutions at Brazil\'s largest energy company',
+                        description: 'Leading end-to-end development of business-critical applications and data solutions, focusing on operational excellence and digital transformation. Managing ecosystem of 135+ automations saving 5,000+ monthly hours in 24/7 operation with 200+ analysts.'
+                    },
+                    education: {
+                        title: 'Software Engineering • Wyden • In Progress (2024-2028)',
+                        subtitle: 'Applying theoretical foundations to production projects',
+                        description: 'Combining academic learning with hands-on experience in large-scale systems. Applying software architecture concepts, design patterns, and data engineering in real solutions at RAÍZEN.'
+                    },
+                    previous: {
+                        title: 'Previous Experience: Líder Alimentos + RAÍZEN (2016-2022)',
+                        subtitle: 'Foundations in data analysis and logistics optimization',
+                        description: '6+ years optimizing operations through data analysis and strategic planning. Reduced milk transportation losses by 60%, increased transported volume by 16%, and developed analytical dashboards for data-driven decision making.'
+                    }
+                },
+                dataEngineering: {
+                    title: 'Data Engineering Showcase',
+                    subtitle: 'Enterprise-scale data architecture with measurable business impact',
+                    resultsTitle: 'Real Impact Results',
+                    result1: 'Data Warehouse performance improvement',
+                    result2: 'Hours saved monthly',
+                    result3: 'Critical systems uptime'
+                },
+                terminal: {
+                    tab1: 'Data Warehouse',
+                    tab2: 'CIA BOT Suite',
+                    tab3: 'Telegram Bot'
+                },
+                fullstack: {
+                    title: 'Python Fullstack Portfolio',
+                    subtitle: 'High-availability web applications that transformed RAÍZEN operations'
+                },
+                projects: {
+                    nav: {
+                        overview: 'Overview',
+                        results: 'Results',
+                        tech: 'Tech'
+                    },
+                    dashboard: {
+                        title: 'CCT Trucks Dashboard',
+                        subtitle: 'Real-Time Logistics Monitoring Dashboard',
+                        description: 'Web system for complete logistics flow visibility, tracking truck delays and optimizing routes. Includes industrial performance and autonomy module for strategic decision making.',
+                        status: 'System Online',
+                        reduction: 'reduction',
+                        metric: 'truck shortage index',
+                        features: 'Reliable database • Optimized performance • Multi-filters'
+                    },
+                    maintenance: {
+                        title: 'Maintenance System',
+                        subtitle: 'Integrated Maintenance Intercommunication',
+                        description: 'Module embedded in operational dashboards to streamline identification and resolution of corrective maintenance. Real-time notifications and complete tracking.',
+                        reduction1: 'reduction',
+                        improvement: 'improvement',
+                        metric1: 'OS time',
+                        metric2: 'scheduling',
+                        feature1: 'Instant notifications',
+                        feature2: 'Complete history'
+                    },
+                    dto: {
+                        title: 'DTO Portal',
+                        subtitle: 'Technical Evaluation Portal',
+                        description: 'Web tool for conducting technical and procedural evaluations of analysts, generating history and visual data for performance analysis.',
+                        adoption: 'Adoption Rate',
+                        digitized: 'Digitized Evaluations',
+                        all: 'All',
+                        analytics: 'Visual Analytics',
+                        implemented: 'Implemented'
+                    },
+                    links: {
+                        title: 'Links Generation Portal',
+                        subtitle: 'Secure Document Sharing',
+                        description: 'Web tool integrated with SharePoint via Microsoft Graph API for controlled sharing of sensitive data with full compliance.'
+                    },
+                    telegram: {
+                        title: 'Telegram Bot',
+                        subtitle: 'Operational Queries Bot',
+                        description: 'Python bot for real-time dispatch queries, processing 1000+ daily uses with automatic visual report generation and optimized persistence.',
+                        reduction: 'reduction',
+                        metric1: 'operational decision time',
+                        units: 'units',
+                        metric2: 'agricultural served',
+                        feature: 'Instant mobile queries'
+                    }
+                },
+                blog: {
+                    title: 'Technical Insights',
+                    subtitle: 'Sharing learnings from real projects at RAÍZEN',
+                    post1: {
+                        date: 'December 2024',
+                        read: '8 min read',
+                        title: 'How I Achieved 800% Improvement with Parquet on Azure',
+                        excerpt: 'Deep dive into the Data Warehouse architecture that transformed our Power BI dashboards from minutes to seconds loading time, using advanced optimization techniques.'
+                    },
+                    post2: {
+                        date: 'November 2024',
+                        read: '10 min read',
+                        title: 'CIA BOT: 135 Automations Saving 5,000+ Hours Monthly',
+                        excerpt: 'How I architected and implemented an enterprise-scale automation ecosystem that revolutionized RAÍZEN\'s 24/7 operation with measurable business impact.'
+                    },
+                    post3: {
+                        date: 'October 2024',
+                        read: '7 min read',
+                        title: 'Watchdog Architecture: 97%+ Uptime in Critical Systems',
+                        excerpt: 'Resilient architecture strategies that transformed unstable systems into high-availability solutions with self-recovery and proactive monitoring.'
+                    }
+                },
+                contact: {
+                    title: 'Let\'s Build Something Together',
+                    subtitle: 'Interested in robust Data Engineering or Python Fullstack solutions? Let\'s talk!',
+                    form: {
+                        name: 'Name',
+                        company: 'Company',
+                        message: 'Message',
+                        placeholder: 'Tell me about your project or opportunity...',
+                        submit: 'Send Message'
+                    },
+                    phone: 'Phone',
+                    location: {
+                        title: 'Location',
+                        value: 'Piracicaba, São Paulo • Brazil'
+                    }
+                }
+            }
+        };
+
+        // === GLOBAL VARIABLES ===
+        let currentLang = 'pt';
+        let currentTerminalTab = 'parquet';
+        
+        const terminalScripts = {
+            pt: {
+                parquet: [
+                    '$ python azure_parquet_migration.py --optimize',
+                    '<span class="terminal-success">✓ Conectando ao Azure Data Lake...</span>',
+                    '<span class="terminal-warning">→ Analisando estrutura atual de dados...</span>',
+                    '<span class="terminal-output">Detectados: 2.3TB dados estruturados</span>',
+                    '',
+                    '$ python optimize_parquet_schema.py',
+                    '<span class="terminal-warning">→ Aplicando compressão snappy...</span>',
+                    '<span class="terminal-warning">→ Otimizando estrutura colunar...</span>',
+                    '<span class="terminal-success">✓ Redução storage: 60% achieved</span>',
+                    '',
+                    '$ python test_performance.py --power-bi',
+                    '<span class="terminal-warning">→ Testando queries analíticas...</span>',
+                    '<span class="terminal-success">✓ Loading time: 3min → 20sec</span>',
+                    '<span class="terminal-success">✓ Performance improvement: 800%</span>',
+                    '',
+                    '<span style="color: #3b82f6;">🚀 Data Warehouse otimizado com sucesso!</span>',
+                    '<span style="color: #3b82f6;">📊 Power BI dashboards agora carregam em segundos</span>'
+                ],
+                cia: [
+                    '$ python cia_bot_orchestrator.py --status',
+                    '<span class="terminal-success">✓ CIA BOT Control Center Online</span>',
+                    '<span class="terminal-output">Total Scripts: 135</span>',
+                    '<span class="terminal-output">Active: 132 | Standby: 3</span>',
+                    '',
+                    '<span class="terminal-warning">→ Scanning automation processes...</span>',
+                    '<span class="terminal-output">ETL Pipelines: 40 running</span>',
+                    '<span class="terminal-output">Report Generators: 35 active</span>',
+                    '<span class="terminal-output">Process Automations: 25 executing</span>',
+                    '<span class="terminal-output">API Integrations: 20 connected</span>',
+                    '<span class="terminal-output">Web Applications: 15 serving</span>',
+                    '',
+                    '$ python calculate_savings.py --monthly',
+                    '<span class="terminal-warning">→ Calculating operational savings...</span>',
+                    '<span class="terminal-success">✓ Hours saved this month: 5,247</span>',
+                    '<span class="terminal-success">✓ Analysts supported: 200+</span>',
+                    '<span class="terminal-success">✓ 24/7 operation maintained</span>',
+                    '',
+                    '<span style="color: #3b82f6;">🤖 CIA BOT ecosystem running perfectly!</span>',
+                    '<span style="color: #3b82f6;">⚡ Enterprise automation at scale</span>'
+                ],
+                telegram: [
+                    '$ python telegram_dispatch_bot.py --deploy',
+                    '<span class="terminal-success">✓ Bot token validated</span>',
+                    '<span class="terminal-success">✓ Webhook configured on Azure</span>',
+                    '<span class="terminal-warning">→ Connecting to dispatch database...</span>',
+                    '',
+                    '<span class="terminal-output">Bot: @raizen_dispatch_bot is live!</span>',
+                    '<span class="terminal-output">Agricultural units connected: 26</span>',
+                    '<span class="terminal-output">Features available:</span>',
+                    '<span class="terminal-output">  📊 Real-time dispatch queries</span>',
+                    '<span class="terminal-output">  📱 Mobile-optimized interface</span>',
+                    '<span class="terminal-output">  🖼️ Automated report generation</span>',
+                    '',
+                    '<span class="terminal-warning">→ Processing incoming query...</span>',
+                    '<span class="terminal-output">User: Field Supervisor - Unit 15</span>',
+                    '<span class="terminal-output">Query: Status frente Norte</span>',
+                    '<span class="terminal-success">✓ Report generated and sent</span>',
+                    '',
+                    '<span class="terminal-warning">→ Daily statistics...</span>',
+                    '<span class="terminal-success">✓ Queries processed today: 1,032</span>',
+                    '<span class="terminal-success">✓ Decision time reduced: 65%</span>',
+                    '',
+                    '<span style="color: #3b82f6;">📱 Telegram bot transforming field operations!</span>',
+                    '<span style="color: #3b82f6;">🏭 26 agricultural units connected</span>'
+                ]
+            },
+            en: {
+                parquet: [
+                    '$ python azure_parquet_migration.py --optimize',
+                    '<span class="terminal-success">✓ Connecting to Azure Data Lake...</span>',
+                    '<span class="terminal-warning">→ Analyzing current data structure...</span>',
+                    '<span class="terminal-output">Detected: 2.3TB structured data</span>',
+                    '',
+                    '$ python optimize_parquet_schema.py',
+                    '<span class="terminal-warning">→ Applying snappy compression...</span>',
+                    '<span class="terminal-warning">→ Optimizing columnar structure...</span>',
+                    '<span class="terminal-success">✓ Storage reduction: 60% achieved</span>',
+                    '',
+                    '$ python test_performance.py --power-bi',
+                    '<span class="terminal-warning">→ Testing analytical queries...</span>',
+                    '<span class="terminal-success">✓ Loading time: 3min → 20sec</span>',
+                    '<span class="terminal-success">✓ Performance improvement: 800%</span>',
+                    '',
+                    '<span style="color: #3b82f6;">🚀 Data Warehouse optimized successfully!</span>',
+                    '<span style="color: #3b82f6;">📊 Power BI dashboards now load in seconds</span>'
+                ],
+                cia: [
+                    '$ python cia_bot_orchestrator.py --status',
+                    '<span class="terminal-success">✓ CIA BOT Control Center Online</span>',
+                    '<span class="terminal-output">Total Scripts: 135</span>',
+                    '<span class="terminal-output">Active: 132 | Standby: 3</span>',
+                    '',
+                    '<span class="terminal-warning">→ Scanning automation processes...</span>',
+                    '<span class="terminal-output">ETL Pipelines: 40 running</span>',
+                    '<span class="terminal-output">Report Generators: 35 active</span>',
+                    '<span class="terminal-output">Process Automations: 25 executing</span>',
+                    '<span class="terminal-output">API Integrations: 20 connected</span>',
+                    '<span class="terminal-output">Web Applications: 15 serving</span>',
+                    '',
+                    '$ python calculate_savings.py --monthly',
+                    '<span class="terminal-warning">→ Calculating operational savings...</span>',
+                    '<span class="terminal-success">✓ Hours saved this month: 5,247</span>',
+                    '<span class="terminal-success">✓ Analysts supported: 200+</span>',
+                    '<span class="terminal-success">✓ 24/7 operation maintained</span>',
+                    '',
+                    '<span style="color: #3b82f6;">🤖 CIA BOT ecosystem running perfectly!</span>',
+                    '<span style="color: #3b82f6;">⚡ Enterprise automation at scale</span>'
+                ],
+                telegram: [
+                    '$ python telegram_dispatch_bot.py --deploy',
+                    '<span class="terminal-success">✓ Bot token validated</span>',
+                    '<span class="terminal-success">✓ Webhook configured on Azure</span>',
+                    '<span class="terminal-warning">→ Connecting to dispatch database...</span>',
+                    '',
+                    '<span class="terminal-output">Bot: @raizen_dispatch_bot is live!</span>',
+                    '<span class="terminal-output">Agricultural units connected: 26</span>',
+                    '<span class="terminal-output">Features available:</span>',
+                    '<span class="terminal-output">  📊 Real-time dispatch queries</span>',
+                    '<span class="terminal-output">  📱 Mobile-optimized interface</span>',
+                    '<span class="terminal-output">  🖼️ Automated report generation</span>',
+                    '',
+                    '<span class="terminal-warning">→ Processing incoming query...</span>',
+                    '<span class="terminal-output">User: Field Supervisor - Unit 15</span>',
+                    '<span class="terminal-output">Query: North front status</span>',
+                    '<span class="terminal-success">✓ Report generated and sent</span>',
+                    '',
+                    '<span class="terminal-warning">→ Daily statistics...</span>',
+                    '<span class="terminal-success">✓ Queries processed today: 1,032</span>',
+                    '<span class="terminal-success">✓ Decision time reduced: 65%</span>',
+                    '',
+                    '<span style="color: #3b82f6;">📱 Telegram bot transforming field operations!</span>',
+                    '<span style="color: #3b82f6;">🏭 26 agricultural units connected</span>'
+                ]
+            }
+        };
+
+        // === LANGUAGE SWITCHING ===
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.body.setAttribute('data-lang', lang);
+            
+            // Update language toggle button
+            const langToggle = document.getElementById('currentLang');
+            langToggle.textContent = lang === 'pt' ? '🇧🇷 PT' : '🇺🇸 EN';
+            
+            // Update all i18n elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = getTranslation(key, lang);
+                if (translation) {
+                    element.innerHTML = translation;
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const translation = getTranslation(key, lang);
+                if (translation) {
+                    element.placeholder = translation;
+                }
+            });
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+            
+            // Update title
+            document.title = lang === 'pt' 
+                ? 'Matheus Sousa Beck | Data Solutions Engineer'
+                : 'Matheus Sousa Beck | Data Solutions Engineer';
+                
+            // Clear terminal and update content
+            clearTerminal();
+        }
+
+        function getTranslation(key, lang) {
+            const keys = key.split('.');
+            let translation = translations[lang];
+            
+            for (const k of keys) {
+                if (translation && translation[k]) {
+                    translation = translation[k];
+                } else {
+                    return null;
+                }
+            }
+            
+            return translation;
+        }
+
+        // === NAVIGATION & THEME ===
+        const languageToggle = document.getElementById('languageToggle');
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        languageToggle.addEventListener('click', () => {
+            const newLang = currentLang === 'pt' ? 'en' : 'pt';
+            switchLanguage(newLang);
+        });
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+
+        // Detect system theme preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            body.setAttribute('data-theme', 'light');
+            themeToggle.textContent = '☀️';
+        }
+
+        // === PROGRESS BAR ===
+        function updateProgressBar() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        window.addEventListener('scroll', updateProgressBar);
+
+        // === SCROLL ANIMATIONS ===
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // === TYPEWRITER EFFECT ===
+        const typewriter = document.getElementById('typewriter');
+        const text = 'Matheus Sousa Beck';
+        let i = 0;
+        
+        function typeText() {
+            if (i < text.length) {
+                typewriter.textContent = text.slice(0, i + 1);
+                i++;
+                setTimeout(typeText, 100);
+            }
+        }
+        
+        setTimeout(typeText, 1000);
+        
+        // === SMOOTH SCROLLING ===
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // === TERMINAL FUNCTIONALITY ===
+        function clearTerminal() {
+            const terminal = document.getElementById('terminalOutput');
+            terminal.innerHTML = `
+                <div class="terminal-line">
+                    <span class="terminal-prompt">raizen@azure-production:~$</span> 
+                    <span class="terminal-cursor"></span>
+                </div>
+            `;
+        }
+
+        function runTerminalDemo() {
+            const terminal = document.getElementById('terminalOutput');
+            const commands = terminalScripts[currentLang][currentTerminalTab];
+            
+            clearTerminal();
+            
+            let delay = 0;
+            commands.forEach((cmd, index) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'terminal-line';
+                    line.innerHTML = cmd;
+                    terminal.appendChild(line);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }, delay);
+                delay += cmd === '' ? 200 : 400;
+            });
+            
+            setTimeout(() => {
+                const promptLine = document.createElement('div');
+                promptLine.className = 'terminal-line';
+                promptLine.innerHTML = `
+                    <span class="terminal-prompt">raizen@azure-production:~$</span> 
+                    <span class="terminal-cursor"></span>
+                `;
+                terminal.appendChild(promptLine);
+                terminal.scrollTop = terminal.scrollHeight;
+            }, delay + 500);
+        }
+
+        // Terminal tab switching
+        document.querySelectorAll('.terminal-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.terminal-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentTerminalTab = this.getAttribute('data-tab');
+                clearTerminal();
+            });
+        });
+
+        // === PROJECT SHOWCASE NAVIGATION ===
+        const projectContent = {
+            pt: {
+                dashboard: {
+                    overview: {
+                        content: `
+                            <p><strong>Dashboard de Monitoramento Logístico em Tempo Real</strong></p>
+                            <p>Sistema web para visibilidade completa do fluxo logístico, rastreando atrasos de caminhões 
+                            e otimizando rotas. Inclui módulo de performance industrial e autonomia para tomada de decisão estratégica.</p>
+                            <div class="project-demo" style="margin-top: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                    <div style="color: var(--success-color);">● Sistema Online</div>
+                                    <div><strong>8% redução</strong> índice falta caminhões</div>
+                                </div>
+                                <div style="background: var(--success-color); height: 4px; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                                    Base de dados confiável • Performance otimizada • Multi-filtros
+                                </div>
+                            </div>
+                        `
+                    },
+                    demo: {
+                        content: `
+                            <h4 style="margin-bottom: 1rem;">Resultados Mensuráveis</h4>
+                            <div style="display: grid; gap: 1rem;">
+                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
+                                    <h5 style="color: var(--success-color); margin-bottom: 0.5rem;">8% Redução no Índice de Falta de Caminhões</h5>
+                                    <p style="font-size: 0.875rem;">KPI primário operacional significativamente melhorado através de visibilidade em tempo real.</p>
+                                </div>
+                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
+                                    <h5 style="color: var(--primary-color); margin-bottom: 0.5rem;">Base de Dados Confiável</h5>
+                                    <p style="font-size: 0.875rem;">Correção completa de processos manuais falhos, criando fonte única da verdade.</p>
+                                </div>
+                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
+                                    <h5 style="color: var(--warning-color); margin-bottom: 0.5rem;">Interface Multi-Páginas</h5>
+                                    <p style="font-size: 0.875rem;">Dashboards especializados para diferentes operações com filtros avançados.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    tech: {
+                        content: `
+                            <h4 style="margin-bottom: 1rem;">Stack Técnica</h4>
+                            <div style="margin-bottom: 1.5rem;">
+                                <p><strong>Frontend:</strong></p>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                                    <li>JavaScript vanilla para máxima performance</li>
+                                    <li>HTML5 + CSS3 responsivo</li>
+                                    <li>Chart.js para visualizações interativas</li>
+                                    <li>WebSockets para atualizações em tempo real</li>
+                                </ul>
+                                
+                                <p><strong>Backend:</strong></p>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                                    <li>Python Flask para APIs RESTful</li>
+                                    <li>Pipeline de processamento de dados otimizado</li>
+                                    <li>Integração com sistemas legados</li>
+                                </ul>
+                                
+                                <p><strong>Dados:</strong></p>
+                                <ul style="margin-left: 1.5rem;">
+                                    <li>Arquivos Parquet para performance</li>
+                                    <li>Atualização automática de dados</li>
+                                    <li>Validação e limpeza automatizada</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                }
+            },
+            en: {
+                dashboard: {
+                    overview: {
+                        content: `
+                            <p><strong>Real-Time Logistics Monitoring Dashboard</strong></p>
+                            <p>Web system for complete logistics flow visibility, tracking truck delays and optimizing routes. 
+                            Includes industrial performance and autonomy module for strategic decision making.</p>
+                            <div class="project-demo" style="margin-top: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                    <div style="color: var(--success-color);">● System Online</div>
+                                    <div><strong>8% reduction</strong> truck shortage index</div>
+                                </div>
+                                <div style="background: var(--success-color); height: 4px; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                                    Reliable database • Optimized performance • Multi-filters
+                                </div>
+                            </div>
+                        `
+                    },
+                    demo: {
+                        content: `
+                            <h4 style="margin-bottom: 1rem;">Measurable Results</h4>
+                            <div style="display: grid; gap: 1rem;">
+                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
+                                    <h5 style="color: var(--success-color); margin-bottom: 0.5rem;">8% Reduction in Truck Shortage Index</h5>
+                                    <p style="font-size: 0.875rem;">Primary operational KPI significantly improved through real-time visibility.</p>
+                                </div>
+                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
+                                    <h5 style="color: var(--primary-color); margin-bottom: 0.5rem;">Reliable Database</h5>
+                                    <p style="font-size: 0.875rem;">Complete correction of flawed manual processes, creating single source of truth.</p>
+                                </div>
+                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
+                                    <h5 style="color: var(--warning-color); margin-bottom: 0.5rem;">Multi-Page Interface</h5>
+                                    <p style="font-size: 0.875rem;">Specialized dashboards for different operations with advanced filters.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    tech: {
+                        content: `
+                            <h4 style="margin-bottom: 1rem;">Technical Stack</h4>
+                            <div style="margin-bottom: 1.5rem;">
+                                <p><strong>Frontend:</strong></p>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                                    <li>Vanilla JavaScript for maximum performance</li>
+                                    <li>Responsive HTML5 + CSS3</li>
+                                    <li>Chart.js for interactive visualizations</li>
+                                    <li>WebSockets for real-time updates</li>
+                                </ul>
+                                
+                                <p><strong>Backend:</strong></p>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                                    <li>Python Flask for RESTful APIs</li>
+                                    <li>Optimized data processing pipeline</li>
+                                    <li>Integration with legacy systems</li>
+                                </ul>
+                                
+                                <p><strong>Data:</strong></p>
+                                <ul style="margin-left: 1.5rem;">
+                                    <li>Parquet files for performance</li>
+                                    <li>Automatic data updates</li>
+                                    <li>Automated validation and cleaning</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                }
+            }
+        };
+
+        document.querySelectorAll('.project-nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const project = this.getAttribute('data-project');
+                const view = this.getAttribute('data-view');
+                
+                // Update active state
+                this.parentElement.querySelectorAll('.project-nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update content based on current language
+                const contentElement = document.getElementById(`${project}-content`);
+                if (contentElement && projectContent[currentLang] && projectContent[currentLang][project] && projectContent[currentLang][project][view]) {
+                    contentElement.innerHTML = projectContent[currentLang][project][view].content;
+                }
+            });
+        });
+
+        // === BLOG FUNCTIONALITY ===
+        const blogPosts = {
+            pt: {
+                'parquet-optimization': {
+                    title: 'Como Alcancei 800% de Melhoria com Parquet no Azure',
+                    content: `
+                        <h1>Como Alcancei 800% de Melhoria com Parquet no Azure</h1>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Dezembro 2024 • 8 min read • RAÍZEN</div>
+                        
+                        <p>Quando assumi a responsabilidade pelo Data Warehouse da RAÍZEN, nossos dashboards Power BI estavam levando mais de 3 minutos para carregar. Para uma operação 24/7 que depende de decisões em tempo real, isso era inaceitável.</p>
+                        
+                        <h2>O Desafio na RAÍZEN</h2>
+                        <p>Como a maior empresa de energia do Brasil, a RAÍZEN processa volumes massivos de dados operacionais:</p>
+                        <ul>
+                            <li>2.3TB de dados estruturados em tempo real</li>
+                            <li>200+ analistas dependendo de dashboards atualizados</li>
+                            <li>Operação 24/7 onde segundos importam</li>
+                            <li>Múltiplas fontes de dados com estruturas diferentes</li>
+                        </ul>
+                        
+                        <h2>A Solução: Arquitetura Parquet no Azure</h2>
+                        <p>Implementei uma migração completa para Apache Parquet no Azure Data Lake, focando em otimização de performance e redução de custos.</p>
+                        
+                        <h2>Resultados Transformadores</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <h4 style="color: var(--success-color);">800% Melhoria Performance</h4>
+                                <p>3 minutos → 20 segundos de carregamento</p>
+                            </div>
+                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <h4 style="color: var(--primary-color);">60% Redução Storage</h4>
+                                <p>Compressão inteligente sem perda de dados</p>
+                            </div>
+                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <h4 style="color: var(--warning-color);">Queries Complexas Viáveis</h4>
+                                <p>Análises antes impossíveis agora são rotina</p>
+                            </div>
+                        </div>
+                        
+                        <p>Esta otimização transformou completamente nossa capacidade analítica, estabelecendo uma nova base sólida para todas as iniciativas de dados na RAÍZEN.</p>
+                    `
+                },
+                'cia-automation': {
+                    title: 'CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais',
+                    content: `
+                        <h1>CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais</h1>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Novembro 2024 • 10 min read • RAÍZEN</div>
+                        
+                        <p>O CIA BOT é meu projeto mais ambicioso na RAÍZEN: um ecossistema de 135+ automações que revolucionou nossa operação 24/7, economizando mais de 5.000 horas mensais de trabalho manual.</p>
+                        
+                        <h2>O Desafio: Operação Manual em Escala Industrial</h2>
+                        <p>A RAÍZEN opera 200+ analistas em turnos 24/7. Antes do CIA BOT:</p>
+                        <ul>
+                            <li>Processos manuais repetitivos consumiam 40%+ do tempo dos analistas</li>
+                            <li>Relatórios gerados individualmente com alta chance de erro</li>
+                            <li>Falta de padronização entre turnos e unidades</li>
+                            <li>Informações críticas perdidas entre handoffs</li>
+                        </ul>
+                        
+                        <h2>Resultados Transformadores</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
+                                <div style="font-size: 3rem; color: var(--success-color); font-weight: bold;">5,000+</div>
+                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Horas Economizadas</div>
+                                <div style="color: var(--text-secondary);">Por mês em operação 24/7</div>
+                            </div>
+                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
+                                <div style="font-size: 3rem; color: var(--primary-color); font-weight: bold;">200+</div>
+                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Analistas Impactados</div>
+                                <div style="color: var(--text-secondary);">Maior produtividade e satisfação</div>
+                            </div>
+                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
+                                <div style="font-size: 3rem; color: var(--warning-color); font-weight: bold;">135+</div>
+                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Automações Ativas</div>
+                                <div style="color: var(--text-secondary);">Ecossistema completo</div>
+                            </div>
+                        </div>
+                        
+                        <p>Este projeto demonstrou como automação bem arquitetada pode transformar operações em escala industrial, criando valor mensurável e sustentável para o negócio.</p>
+                    `
+                },
+                'watchdog-architecture': {
+                    title: 'Watchdog Architecture: 97%+ Uptime em Sistemas Críticos',
+                    content: `
+                        <h1>Watchdog Architecture: 97%+ Uptime em Sistemas Críticos</h1>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Outubro 2024 • 7 min read • RAÍZEN</div>
+                        
+                        <p>Transformar sistemas instáveis em soluções de alta disponibilidade foi um dos meus maiores desafios técnicos na RAÍZEN. A migração para arquitetura Watchdog elevou nosso uptime para 97%+.</p>
+                        
+                        <h2>O Problema: Sistemas Críticos Instáveis</h2>
+                        <p>Antes da implementação Watchdog, enfrentávamos:</p>
+                        <ul>
+                            <li>Falhas frequentes em scripts Python críticos</li>
+                            <li>Intervenção manual constante, inclusive madrugadas</li>
+                            <li>Perda de dados durante falhas de sistema</li>
+                            <li>Dashboards indisponíveis em momentos críticos</li>
+                        </ul>
+                        
+                        <h2>Resultados Transformadores</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--success-color); text-align: center;">
+                                <div style="font-size: 2.5rem; color: var(--success-color); font-weight: bold;">97%+</div>
+                                <div style="font-weight: 600;">Uptime Geral</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Sistemas críticos</div>
+                            </div>
+                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--primary-color); text-align: center;">
+                                <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;">90%</div>
+                                <div style="font-weight: 600;">Redução Intervenções</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Manuais eliminadas</div>
+                            </div>
+                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--warning-color); text-align: center;">
+                                <div style="font-size: 2.5rem; color: var(--warning-color); font-weight: bold;">0</div>
+                                <div style="font-weight: 600;">Chamadas Madrugada</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Últimos 3 meses</div>
+                            </div>
+                        </div>
+                        
+                        <p>Esta transformação demonstrou como padrões de engenharia de confiabilidade podem transformar sistemas críticos, elevando a operação de reativa para proativa.</p>
+                    `
+                }
+            },
+            en: {
+                'parquet-optimization': {
+                    title: 'How I Achieved 800% Performance Improvement with Parquet on Azure',
+                    content: `
+                        <h1>How I Achieved 800% Performance Improvement with Parquet on Azure</h1>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">December 2024 • 8 min read • RAÍZEN</div>
+                        
+                        <p>When I took responsibility for RAÍZEN's Data Warehouse, our Power BI dashboards were taking over 3 minutes to load. For a 24/7 operation that depends on real-time decisions, this was unacceptable.</p>
+                        
+                        <h2>The Challenge at RAÍZEN</h2>
+                        <p>As Brazil's largest energy company, RAÍZEN processes massive volumes of operational data:</p>
+                        <ul>
+                            <li>2.3TB of real-time structured data</li>
+                            <li>200+ analysts depending on updated dashboards</li>
+                            <li>24/7 operation where seconds matter</li>
+                            <li>Multiple data sources with different structures</li>
+                        </ul>
+                        
+                        <h2>The Solution: Parquet Architecture on Azure</h2>
+                        <p>I implemented a complete migration to Apache Parquet on Azure Data Lake, focusing on performance optimization and cost reduction.</p>
+                        
+                        <h2>Transformative Results</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <h4 style="color: var(--success-color);">800% Performance Improvement</h4>
+                                <p>3 minutes → 20 seconds loading time</p>
+                            </div>
+                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <h4 style="color: var(--primary-color);">60% Storage Reduction</h4>
+                                <p>Smart compression without data loss</p>
+                            </div>
+                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
+                                <h4 style="color: var(--warning-color);">Complex Queries Enabled</h4>
+                                <p>Previously impossible analyses now routine</p>
+                            </div>
+                        </div>
+                        
+                        <p>This optimization completely transformed our analytical capabilities, establishing a new solid foundation for all data initiatives at RAÍZEN.</p>
+                    `
+                },
+                'cia-automation': {
+                    title: 'CIA BOT: 135 Automations Saving 5,000+ Hours Monthly',
+                    content: `
+                        <h1>CIA BOT: 135 Automations Saving 5,000+ Hours Monthly</h1>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">November 2024 • 10 min read • RAÍZEN</div>
+                        
+                        <p>CIA BOT is my most ambitious project at RAÍZEN: an ecosystem of 135+ automations that revolutionized our 24/7 operation, saving over 5,000 monthly hours of manual work.</p>
+                        
+                        <h2>The Challenge: Manual Operations at Industrial Scale</h2>
+                        <p>RAÍZEN operates 200+ analysts in 24/7 shifts. Before CIA BOT:</p>
+                        <ul>
+                            <li>Repetitive manual processes consumed 40%+ of analysts' time</li>
+                            <li>Reports generated individually with high error rates</li>
+                            <li>Lack of standardization between shifts and units</li>
+                            <li>Critical information lost between handoffs</li>
+                        </ul>
+                        
+                        <h2>Transformative Results</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
+                                <div style="font-size: 3rem; color: var(--success-color); font-weight: bold;">5,000+</div>
+                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Hours Saved</div>
+                                <div style="color: var(--text-secondary);">Monthly in 24/7 operation</div>
+                            </div>
+                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
+                                <div style="font-size: 3rem; color: var(--primary-color); font-weight: bold;">200+</div>
+                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Analysts Impacted</div>
+                                <div style="color: var(--text-secondary);">Higher productivity and satisfaction</div>
+                            </div>
+                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
+                                <div style="font-size: 3rem; color: var(--warning-color); font-weight: bold;">135+</div>
+                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Active Automations</div>
+                                <div style="color: var(--text-secondary);">Complete ecosystem</div>
+                            </div>
+                        </div>
+                        
+                        <p>This project demonstrated how well-architected automation can transform industrial-scale operations, creating measurable and sustainable business value.</p>
+                    `
+                },
+                'watchdog-architecture': {
+                    title: 'Watchdog Architecture: 97%+ Uptime in Critical Systems',
+                    content: `
+                        <h1>Watchdog Architecture: 97%+ Uptime in Critical Systems</h1>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">October 2024 • 7 min read • RAÍZEN</div>
+                        
+                        <p>Transforming unstable systems into high-availability solutions was one of my biggest technical challenges at RAÍZEN. The Watchdog architecture migration elevated our uptime to 97%+.</p>
+                        
+                        <h2>The Problem: Unstable Critical Systems</h2>
+                        <p>Before Watchdog implementation, we faced:</p>
+                        <ul>
+                            <li>Frequent failures in critical Python scripts</li>
+                            <li>Constant manual intervention, including early morning calls</li>
+                            <li>Data loss during system failures</li>
+                            <li>Dashboards unavailable at critical moments</li>
+                        </ul>
+                        
+                        <h2>Transformative Results</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--success-color); text-align: center;">
+                                <div style="font-size: 2.5rem; color: var(--success-color); font-weight: bold;">97%+</div>
+                                <div style="font-weight: 600;">Overall Uptime</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Critical systems</div>
+                            </div>
+                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--primary-color); text-align: center;">
+                                <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;">90%</div>
+                                <div style="font-weight: 600;">Intervention Reduction</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Manual eliminated</div>
+                            </div>
+                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--warning-color); text-align: center;">
+                                <div style="font-size: 2.5rem; color: var(--warning-color); font-weight: bold;">0</div>
+                                <div style="font-weight: 600;">Early Morning Calls</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Last 3 months</div>
+                            </div>
+                        </div>
+                        
+                        <p>This transformation demonstrated how reliability engineering patterns can transform critical systems, elevating operations from reactive to proactive.</p>
+                    `
+                }
+            }
+        };
+
+        function openBlogPost(postId) {
+            const modal = document.getElementById('blogModal');
+            const content = document.getElementById('blogPostContent');
+            
+            if (blogPosts[currentLang] && blogPosts[currentLang][postId]) {
+                content.innerHTML = blogPosts[currentLang][postId].content;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeBlogPost() {
+            const modal = document.getElementById('blogModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('blogModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBlogPost();
+            }
+        });
+
+        // === CONTACT FORM ===
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            const loadingText = currentLang === 'pt' ? 'Enviando...' : 'Sending...';
+            const successText = currentLang === 'pt' ? 'Mensagem enviada com sucesso! Retornarei em breve.' : 'Message sent successfully! I\'ll get back to you soon.';
+            
+            submitBtn.textContent = loadingText;
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert(successText);
+                this.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // === HEADER SCROLL EFFECT ===
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+
+        // === DETECT BROWSER LANGUAGE ===
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            if (browserLang.startsWith('pt')) {
+                return 'pt';
+            } else {
+                return 'en';
+            }
+        }
+
+        // === INITIALIZE ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial language based on browser preference
+            const initialLang = detectBrowserLanguage();
+            if (initialLang !== currentLang) {
+                switchLanguage(initialLang);
+            }
+            
+            // Auto-run terminal demo after 3 seconds
+            setTimeout(() => {
+                runTerminalDemo();
+            }, 3000);
+        });
+
+        // === KEYBOARD SHORTCUTS ===
+        document.addEventListener('keydown', function(e) {
+            // Alt + L to switch language
+            if (e.altKey && e.code === 'KeyL') {
+                e.preventDefault();
+                const newLang = currentLang === 'pt' ? 'en' : 'pt';
+                switchLanguage(newLang);
+            }
+            
+            // Alt + T to switch theme
+            if (e.altKey && e.code === 'KeyT') {
+                e.preventDefault();
+                themeToggle.click();
+            }
+            
+            // Escape to close modal
+            if (e.code === 'Escape') {
+                closeBlogPost();
+            }
+        });
+    </script>
+</body>
+</html>
