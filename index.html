@@ -954,25 +954,6 @@
             color: var(--error-color);
             transform: scale(1.2);
         }
-
-        /* === AWARD BADGE === */
-        .award-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #000;
-            border-radius: 2rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
-        }
     </style>
 </head>
 <body data-theme="dark" data-lang="pt">
@@ -1096,7 +1077,6 @@
             </div>
         </div>
     </section>
-
 
     <!-- Data Engineering Section -->
     <section id="data-engineering" class="section">
@@ -1279,11 +1259,7 @@
                     </div>
                     <div class="project-content">
                         <p><strong data-i18n="projects.telegram.subtitle">Bot de Consultas Operacionais</strong></p>
-                        <div class="award-badge" style="margin: 1rem 0; display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid rgba(251, 191, 36, 0.3);">
-                            <span style="font-size: 1.5rem;">🏆</span>
-                            <strong style="color: #fbbf24;">Gold Kaizen Award 2024</strong>
-                        </div>
-                        <p data-i18n="projects.telegram.description">Bot Python para consultas de despachos em tempo real, processando 1000+ utilizações diárias
+                        <p data-i18n="projects.telegram.description">Bot Python para consultas de despachos em tempo real, processando 1000+ utilizações diárias 
                         com geração automática de relatórios visuais e persistência otimizada.</p>
                         <div class="project-demo" style="margin-top: 1rem;">
                             <div style="font-size: 0.875rem;">
@@ -1313,7 +1289,7 @@
                         <div class="blog-meta">
                             <span data-i18n="blog.post1.date">Dezembro 2024</span>
                             <span data-i18n="blog.post1.read">8 min leitura</span>
-                            <span>Engenharia de Dados</span>
+                            <span>Data Engineering</span>
                         </div>
                         <h3 class="blog-title" data-i18n="blog.post1.title">Como Alcancei 800% de Melhoria com Parquet no Azure</h3>
                         <p class="blog-excerpt" data-i18n="blog.post1.excerpt">
@@ -1329,7 +1305,7 @@
                         <div class="blog-meta">
                             <span data-i18n="blog.post2.date">Novembro 2024</span>
                             <span data-i18n="blog.post2.read">10 min leitura</span>
-                            <span>Automação</span>
+                            <span>Automation</span>
                         </div>
                         <h3 class="blog-title" data-i18n="blog.post2.title">CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais</h3>
                         <p class="blog-excerpt" data-i18n="blog.post2.excerpt">
@@ -1345,7 +1321,7 @@
                         <div class="blog-meta">
                             <span data-i18n="blog.post3.date">Outubro 2024</span>
                             <span data-i18n="blog.post3.read">7 min leitura</span>
-                            <span>Arquitetura de Sistemas</span>
+                            <span>System Architecture</span>
                         </div>
                         <h3 class="blog-title" data-i18n="blog.post3.title">Watchdog Architecture: 97%+ Uptime em Sistemas Críticos</h3>
                         <p class="blog-excerpt" data-i18n="blog.post3.excerpt">
@@ -1554,19 +1530,19 @@
                     subtitle: 'Compartilhando aprendizados de projetos reais na RAÍZEN',
                     post1: {
                         date: 'Dezembro 2024',
-                        read: '8 min leitura',
+                        read: '8 min read',
                         title: 'Como Alcancei 800% de Melhoria com Parquet no Azure',
                         excerpt: 'Deep dive na arquitetura de Data Warehouse que transformou nossos dashboards Power BI de minutos para segundos de carregamento, usando técnicas avançadas de otimização.'
                     },
                     post2: {
                         date: 'Novembro 2024',
-                        read: '10 min leitura',
+                        read: '10 min read',
                         title: 'CIA BOT Suite: Arquitetura de 11 Módulos Economizando R$ 2M+/Ano',
                         excerpt: 'Deep dive técnico no ecossistema completo: 11 repositórios integrados, 15 módulos ETL, 5 portais Flask/React, 3 bots Telegram, 40 pipelines de dados. Como arquitetei um sistema que transformou 135+ processos manuais em automação inteligente com 97%+ uptime e ROI mensurável. Stack completo: Python, Flask, React, Azure, Parquet, Selenium, APScheduler.'
                     },
                     post3: {
                         date: 'Outubro 2024',
-                        read: '7 min leitura',
+                        read: '7 min read',
                         title: 'Watchdog Architecture: 97%+ Uptime em Sistemas Críticos',
                         excerpt: 'Estratégias de arquitetura resiliente que transformaram sistemas instáveis em soluções de alta disponibilidade com auto-recuperação e monitoramento proativo.'
                     }
@@ -2343,7 +2319,7 @@
                     title: 'How I Achieved 800% Performance Improvement with Parquet on Azure',
                     content: `
                         <h1>How I Achieved 800% Performance Improvement with Parquet on Azure</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">December 2024 • 8 min read • RAÍZEN</div>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">December 2024 • 8 min leitura • RAÍZEN</div>
                         
                         <p>When I took responsibility for RAÍZEN's Data Warehouse, our Power BI dashboards were taking over 3 minutes to load. For a 24/7 operation that depends on real-time decisions, this was unacceptable.</p>
                         
@@ -2382,7 +2358,7 @@
                     title: 'CIA BOT: 135 Automations Saving 5,000+ Hours Monthly',
                     content: `
                         <h1>CIA BOT: 135 Automations Saving 5,000+ Hours Monthly</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">November 2024 • 10 min read • RAÍZEN</div>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">November 2024 • 10 min leitura • RAÍZEN</div>
                         
                         <p>CIA BOT is my most ambitious project at RAÍZEN: an ecosystem of 135+ automations that revolutionized our 24/7 operation, saving over 5,000 monthly hours of manual work.</p>
                         
@@ -2421,7 +2397,7 @@
                     title: 'Watchdog Architecture: 97%+ Uptime in Critical Systems',
                     content: `
                         <h1>Watchdog Architecture: 97%+ Uptime in Critical Systems</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">October 2024 • 7 min read • RAÍZEN</div>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">October 2024 • 7 min leitura • RAÍZEN</div>
                         
                         <p>Transforming unstable systems into high-availability solutions was one of my biggest technical challenges at RAÍZEN. The Watchdog architecture migration elevated our uptime to 97%+.</p>
                         
