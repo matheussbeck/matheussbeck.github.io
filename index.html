@@ -955,206 +955,7 @@
             transform: scale(1.2);
         }
 
-        /* === NEW: ANIMATED COUNTERS === */
-        .stat-number {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            font-variant-numeric: tabular-nums;
-            transition: all 0.3s ease;
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.5rem;
-        }
-
-        /* === NEW: CIA BOT ARCHITECTURE SECTION === */
-        .cia-architecture {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: 1rem;
-            padding: 3rem;
-            margin: 3rem 0;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cia-architecture::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        .cia-module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .cia-module {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cia-module::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary-color);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .cia-module:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
-        }
-
-        .cia-module:hover::before {
-            transform: scaleY(1);
-        }
-
-        .module-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .module-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .module-desc {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .module-stats {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .module-stat {
-            font-size: 0.75rem;
-            color: var(--success-color);
-            font-weight: 600;
-        }
-
-        /* === NEW: TECH STACK BADGES === */
-        .tech-stack-section {
-            margin: 3rem 0;
-        }
-
-        .tech-category {
-            margin: 2rem 0;
-        }
-
-        .tech-category-title {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-        }
-
-        .tech-badges-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .tech-badge-large {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .tech-badge-large:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary-color);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
-        }
-
-        .tech-logo {
-            width: 32px;
-            height: 32px;
-            font-size: 32px;
-        }
-
-        .tech-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tech-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .tech-level {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* === ENHANCED PROJECT CARDS === */
-        .project-showcase {
-            position: relative;
-        }
-
-        .project-showcase::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .project-showcase:hover::after {
-            transform: scaleX(1);
-        }
-
+        /* === AWARD BADGE === */
         .award-badge {
             display: inline-flex;
             align-items: center;
@@ -1165,7 +966,6 @@
             border-radius: 2rem;
             font-weight: 600;
             font-size: 0.875rem;
-            margin-top: 1rem;
             animation: glow 2s ease-in-out infinite;
         }
 
@@ -1301,230 +1101,6 @@
         </div>
     </section>
 
-    <!-- CIA BOT SUITE ARCHITECTURE - NEW VISUAL SECTION -->
-    <section class="section" style="background: var(--dark-bg);">
-        <div class="container">
-            <h2 class="section-title fade-in" style="text-align: center; margin-bottom: 1rem;">
-                🤖 CIA BOT Suite — Arquitetura Completa
-            </h2>
-            <p class="section-subtitle fade-in" style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
-                Ecossistema empresarial com 11 módulos integrados transformando operações em escala
-            </p>
-
-            <!-- Stats Dashboard -->
-            <div class="grid grid-3 fade-in" style="margin-bottom: 3rem;">
-                <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
-                    <div class="stat-number" data-count="135">135+</div>
-                    <div class="stat-label">Automações Ativas</div>
-                </div>
-                <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
-                    <div class="stat-number" data-count="5000">5,000+</div>
-                    <div class="stat-label">Horas Economizadas/Mês</div>
-                </div>
-                <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
-                    <div class="stat-number" data-count="97">97%+</div>
-                    <div class="stat-label">Uptime Sistemas</div>
-                </div>
-            </div>
-
-            <!-- CIA BOT Modules Grid -->
-            <div class="cia-architecture fade-in">
-                <div style="position: relative; z-index: 1;">
-                    <h3 style="color: var(--primary-color); margin-bottom: 2rem; font-size: 1.5rem;">
-                        11 Módulos Integrados
-                    </h3>
-
-                    <div class="cia-module-grid">
-                        <!-- Module 1: ETL -->
-                        <div class="cia-module">
-                            <span class="module-icon">⚙️</span>
-                            <div class="module-title">ETL & Extração</div>
-                            <div class="module-desc">15 módulos de extração automatizada de MaxTrack, SGPA3, Azure, ServiceNow, SharePoint. Selenium + APIs integradas.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 12 Sistemas</span>
-                                <span class="module-stat">✓ 40 Pipelines</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 2: Portais Web -->
-                        <div class="cia-module">
-                            <span class="module-icon">🌐</span>
-                            <div class="module-title">Portais Web</div>
-                            <div class="module-desc">5 aplicações Flask/React: Dashboards CCT, Sistema Manutenções, Portal DTO, Links SharePoint, Chamados GovOp.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 5 Portais</span>
-                                <span class="module-stat">✓ 200+ Usuários</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 3: Telegram Bots -->
-                        <div class="cia-module">
-                            <span class="module-icon">📱</span>
-                            <div class="module-title">Bots Telegram</div>
-                            <div class="module-desc">3 bots operacionais: Despachos (🏆 Gold Kaizen), BOT CIA, Transportadoras. 1,000+ consultas diárias.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 3 Bots</span>
-                                <span class="module-stat">✓ 1K+ Queries/Dia</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 4: Automações RPA -->
-                        <div class="cia-module">
-                            <span class="module-icon">🤖</span>
-                            <div class="module-title">RPA & Automações</div>
-                            <div class="module-desc">20 scripts RPA: Fleet telemetry, compliance, safety reporting, KPI calculation, maintenance tracking.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 20 Scripts</span>
-                                <span class="module-stat">✓ 24/7 Active</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 5: APIs Integration -->
-                        <div class="cia-module">
-                            <span class="module-icon">🔌</span>
-                            <div class="module-title">APIs & Integrações</div>
-                            <div class="module-desc">Integração SGPA3, Hexagon Agron, Azure Synapse, 28 unidades com tokens individuais, monitoramento 24/7.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ REST APIs</span>
-                                <span class="module-stat">✓ 28 Units</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 6: Agendamentos -->
-                        <div class="cia-module">
-                            <span class="module-icon">⏰</span>
-                            <div class="module-title">Agendamentos</div>
-                            <div class="module-desc">13 processos automatizados com APScheduler: PDFs, auditorias, extrações CDC, qualidade templates.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 13 Jobs</span>
-                                <span class="module-stat">✓ APScheduler</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 7: Geração Mensagens -->
-                        <div class="cia-module">
-                            <span class="module-icon">💬</span>
-                            <div class="module-title">Geração Mensagens</div>
-                            <div class="module-desc">5 sistemas de alertas: Pane seca, manutenções, sem apontamento, colheita rápida, PDFs automáticos.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 5 Sistemas</span>
-                                <span class="module-stat">✓ WhatsApp/SMS</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 8: Gerenciador -->
-                        <div class="cia-module">
-                            <span class="module-icon">🎛️</span>
-                            <div class="module-title">Gerenciador Central</div>
-                            <div class="module-desc">Dashboard Tkinter monitorando 40+ funções, logs de execução, restart individual, controle centralizado.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 40+ Funções</span>
-                                <span class="module-stat">✓ Monitoring</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 9: Suporte -->
-                        <div class="cia-module">
-                            <span class="module-icon">🛠️</span>
-                            <div class="module-title">Biblioteca Suporte</div>
-                            <div class="module-desc">30+ módulos compartilhados: Telemetria, KPIs, mailing, compliance, conexões Azure/MongoDB.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ 30+ Módulos</span>
-                                <span class="module-stat">✓ Shared Lib</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 10: Testes -->
-                        <div class="cia-module">
-                            <span class="module-icon">🧪</span>
-                            <div class="module-title">Suite de Testes</div>
-                            <div class="module-desc">Jupyter notebooks para validação, protótipos, integração A3F/PSA, testes de workflow.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ Integration</span>
-                                <span class="module-stat">✓ Prototypes</span>
-                            </div>
-                        </div>
-
-                        <!-- Module 11: Hub Central -->
-                        <div class="cia-module">
-                            <span class="module-icon">🏢</span>
-                            <div class="module-title">Hub Orquestração</div>
-                            <div class="module-desc">WhatsApp + Telegram orquestração, message queuing, coordenação de todos os módulos.</div>
-                            <div class="module-stats">
-                                <span class="module-stat">✓ Central Hub</span>
-                                <span class="module-stat">✓ Multi-channel</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tech Stack Summary -->
-                    <div class="tech-stack-section">
-                        <h4 style="color: var(--primary-color); margin-bottom: 1.5rem; text-align: center; font-size: 1.25rem;">
-                            Stack Tecnológico Completo
-                        </h4>
-                        <div class="tech-badges-container" style="justify-content: center;">
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">🐍</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">Python</span>
-                                    <span class="tech-level">Expert</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">⚛️</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">React</span>
-                                    <span class="tech-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">🌶️</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">Flask</span>
-                                    <span class="tech-level">Expert</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">☁️</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">Azure</span>
-                                    <span class="tech-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">📊</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">Parquet</span>
-                                    <span class="tech-level">Expert</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">🔧</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">Selenium</span>
-                                    <span class="tech-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">📱</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">Telegram API</span>
-                                    <span class="tech-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="tech-badge-large">
-                                <div class="tech-logo">💾</div>
-                                <div class="tech-info">
-                                    <span class="tech-name">SQLite</span>
-                                    <span class="tech-level">Advanced</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Data Engineering Section -->
     <section id="data-engineering" class="section">
@@ -1597,13 +1173,13 @@
             <div class="grid grid-3">
                 <div class="project-showcase scale-in">
                     <div class="project-header">
-                        <div class="project-title">🚚 <span data-i18n="projects.dashboard.title">Dashboard CCT Caminhões</span></div>
-                        <div class="project-status">Live 24/7</div>
+                        <div class="project-title"><span data-i18n="projects.dashboard.title">Dashboard CCT Caminhões</span></div>
+                        <div class="project-status">24/7 Ativo</div>
                     </div>
                     <div class="project-nav">
-                        <button class="project-nav-item active" data-project="dashboard" data-view="overview" data-i18n="projects.nav.overview">Overview</button>
-                        <button class="project-nav-item" data-project="dashboard" data-view="demo" data-i18n="projects.nav.results">Results</button>
-                        <button class="project-nav-item" data-project="dashboard" data-view="tech" data-i18n="projects.nav.tech">Tech</button>
+                        <button class="project-nav-item active" data-project="dashboard" data-view="overview" data-i18n="projects.nav.overview">Visão Geral</button>
+                        <button class="project-nav-item" data-project="dashboard" data-view="demo" data-i18n="projects.nav.results">Resultados</button>
+                        <button class="project-nav-item" data-project="dashboard" data-view="tech" data-i18n="projects.nav.tech">Tecnologia</button>
                     </div>
                     <div class="project-content" id="dashboard-content">
                         <p><strong data-i18n="projects.dashboard.subtitle">Dashboard de Monitoramento Logístico em Tempo Real</strong></p>
@@ -1624,13 +1200,13 @@
                 
                 <div class="project-showcase scale-in">
                     <div class="project-header">
-                        <div class="project-title">🔧 <span data-i18n="projects.maintenance.title">Sistema Manutenções</span></div>
-                        <div class="project-status">Production</div>
+                        <div class="project-title"><span data-i18n="projects.maintenance.title">Sistema Manutenções</span></div>
+                        <div class="project-status">Produção</div>
                     </div>
                     <div class="project-nav">
-                        <button class="project-nav-item active" data-project="maintenance" data-view="overview" data-i18n="projects.nav.overview">Overview</button>
-                        <button class="project-nav-item" data-project="maintenance" data-view="demo" data-i18n="projects.nav.results">Results</button>
-                        <button class="project-nav-item" data-project="maintenance" data-view="tech" data-i18n="projects.nav.tech">Tech</button>
+                        <button class="project-nav-item active" data-project="maintenance" data-view="overview" data-i18n="projects.nav.overview">Visão Geral</button>
+                        <button class="project-nav-item" data-project="maintenance" data-view="demo" data-i18n="projects.nav.results">Resultados</button>
+                        <button class="project-nav-item" data-project="maintenance" data-view="tech" data-i18n="projects.nav.tech">Tecnologia</button>
                     </div>
                     <div class="project-content" id="maintenance-content">
                         <p><strong data-i18n="projects.maintenance.subtitle">Intercomunicação de Manutenções Integrada</strong></p>
@@ -1649,13 +1225,13 @@
                 
                 <div class="project-showcase scale-in">
                     <div class="project-header">
-                        <div class="project-title">📋 <span data-i18n="projects.dto.title">Portal DTO</span></div>
-                        <div class="project-status">100% Adoption</div>
+                        <div class="project-title"><span data-i18n="projects.dto.title">Portal DTO</span></div>
+                        <div class="project-status">100% Adoção</div>
                     </div>
                     <div class="project-nav">
-                        <button class="project-nav-item active" data-project="dto" data-view="overview" data-i18n="projects.nav.overview">Overview</button>
-                        <button class="project-nav-item" data-project="dto" data-view="demo" data-i18n="projects.nav.results">Results</button>
-                        <button class="project-nav-item" data-project="dto" data-view="tech" data-i18n="projects.nav.tech">Tech</button>
+                        <button class="project-nav-item active" data-project="dto" data-view="overview" data-i18n="projects.nav.overview">Visão Geral</button>
+                        <button class="project-nav-item" data-project="dto" data-view="demo" data-i18n="projects.nav.results">Resultados</button>
+                        <button class="project-nav-item" data-project="dto" data-view="tech" data-i18n="projects.nav.tech">Tecnologia</button>
                     </div>
                     <div class="project-content" id="dto-content">
                         <p><strong data-i18n="projects.dto.subtitle">Portal de Avaliação Técnica</strong></p>
@@ -1684,8 +1260,8 @@
             <div class="grid grid-2" style="margin-top: 3rem;">
                 <div class="project-showcase scale-in">
                     <div class="project-header">
-                        <div class="project-title">🔒 <span data-i18n="projects.links.title">Portal Geração Links</span></div>
-                        <div class="project-status">Secure</div>
+                        <div class="project-title"><span data-i18n="projects.links.title">Portal Geração Links</span></div>
+                        <div class="project-status">Seguro</div>
                     </div>
                     <div class="project-content">
                         <p><strong data-i18n="projects.links.subtitle">Compartilhamento Seguro de Documentos</strong></p>
@@ -1702,8 +1278,8 @@
                 
                 <div class="project-showcase scale-in">
                     <div class="project-header">
-                        <div class="project-title">📱 <span data-i18n="projects.telegram.title">Bot Telegram</span></div>
-                        <div class="project-status">1000+ Daily</div>
+                        <div class="project-title"><span data-i18n="projects.telegram.title">Bot Telegram</span></div>
+                        <div class="project-status">1000+ Diário</div>
                     </div>
                     <div class="project-content">
                         <p><strong data-i18n="projects.telegram.subtitle">Bot de Consultas Operacionais</strong></p>
@@ -1740,8 +1316,8 @@
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span data-i18n="blog.post1.date">Dezembro 2024</span>
-                            <span data-i18n="blog.post1.read">8 min read</span>
-                            <span>Data Engineering</span>
+                            <span data-i18n="blog.post1.read">8 min leitura</span>
+                            <span>Engenharia de Dados</span>
                         </div>
                         <h3 class="blog-title" data-i18n="blog.post1.title">Como Alcancei 800% de Melhoria com Parquet no Azure</h3>
                         <p class="blog-excerpt" data-i18n="blog.post1.excerpt">
@@ -1756,8 +1332,8 @@
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span data-i18n="blog.post2.date">Novembro 2024</span>
-                            <span data-i18n="blog.post2.read">10 min read</span>
-                            <span>Automation</span>
+                            <span data-i18n="blog.post2.read">10 min leitura</span>
+                            <span>Automação</span>
                         </div>
                         <h3 class="blog-title" data-i18n="blog.post2.title">CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais</h3>
                         <p class="blog-excerpt" data-i18n="blog.post2.excerpt">
@@ -1772,8 +1348,8 @@
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span data-i18n="blog.post3.date">Outubro 2024</span>
-                            <span data-i18n="blog.post3.read">7 min read</span>
-                            <span>System Architecture</span>
+                            <span data-i18n="blog.post3.read">7 min leitura</span>
+                            <span>Arquitetura de Sistemas</span>
                         </div>
                         <h3 class="blog-title" data-i18n="blog.post3.title">Watchdog Architecture: 97%+ Uptime em Sistemas Críticos</h3>
                         <p class="blog-excerpt" data-i18n="blog.post3.excerpt">
@@ -1982,19 +1558,19 @@
                     subtitle: 'Compartilhando aprendizados de projetos reais na RAÍZEN',
                     post1: {
                         date: 'Dezembro 2024',
-                        read: '8 min read',
+                        read: '8 min leitura',
                         title: 'Como Alcancei 800% de Melhoria com Parquet no Azure',
                         excerpt: 'Deep dive na arquitetura de Data Warehouse que transformou nossos dashboards Power BI de minutos para segundos de carregamento, usando técnicas avançadas de otimização.'
                     },
                     post2: {
                         date: 'Novembro 2024',
-                        read: '10 min read',
+                        read: '10 min leitura',
                         title: 'CIA BOT Suite: Arquitetura de 11 Módulos Economizando R$ 2M+/Ano',
                         excerpt: 'Deep dive técnico no ecossistema completo: 11 repositórios integrados, 15 módulos ETL, 5 portais Flask/React, 3 bots Telegram, 40 pipelines de dados. Como arquitetei um sistema que transformou 135+ processos manuais em automação inteligente com 97%+ uptime e ROI mensurável. Stack completo: Python, Flask, React, Azure, Parquet, Selenium, APScheduler.'
                     },
                     post3: {
                         date: 'Outubro 2024',
-                        read: '7 min read',
+                        read: '7 min leitura',
                         title: 'Watchdog Architecture: 97%+ Uptime em Sistemas Críticos',
                         excerpt: 'Estratégias de arquitetura resiliente que transformaram sistemas instáveis em soluções de alta disponibilidade com auto-recuperação e monitoramento proativo.'
                     }
@@ -2652,7 +2228,7 @@
                     title: 'Como Alcancei 800% de Melhoria com Parquet no Azure',
                     content: `
                         <h1>Como Alcancei 800% de Melhoria com Parquet no Azure</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Dezembro 2024 • 8 min read • RAÍZEN</div>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Dezembro 2024 • 8 min leitura • RAÍZEN</div>
                         
                         <p>Quando assumi a responsabilidade pelo Data Warehouse da RAÍZEN, nossos dashboards Power BI estavam levando mais de 3 minutos para carregar. Para uma operação 24/7 que depende de decisões em tempo real, isso era inaceitável.</p>
                         
@@ -2691,7 +2267,7 @@
                     title: 'CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais',
                     content: `
                         <h1>CIA BOT: 135 Automações Economizando 5.000+ Horas Mensais</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Novembro 2024 • 10 min read • RAÍZEN</div>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Novembro 2024 • 10 min leitura • RAÍZEN</div>
                         
                         <p>O CIA BOT é meu projeto mais ambicioso na RAÍZEN: um ecossistema de 135+ automações que revolucionou nossa operação 24/7, economizando mais de 5.000 horas mensais de trabalho manual.</p>
                         
@@ -2730,7 +2306,7 @@
                     title: 'Watchdog Architecture: 97%+ Uptime em Sistemas Críticos',
                     content: `
                         <h1>Watchdog Architecture: 97%+ Uptime em Sistemas Críticos</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Outubro 2024 • 7 min read • RAÍZEN</div>
+                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">Outubro 2024 • 7 min leitura • RAÍZEN</div>
                         
                         <p>Transformar sistemas instáveis em soluções de alta disponibilidade foi um dos meus maiores desafios técnicos na RAÍZEN. A migração para arquitetura Watchdog elevou nosso uptime para 97%+.</p>
                         
