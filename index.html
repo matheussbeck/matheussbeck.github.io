@@ -419,80 +419,84 @@
             margin-right: auto;
         }
         
-        /* === TIMELINE === */
+        /* === TIMELINE 3D VISUAL === */
         .timeline {
             position: relative;
-            max-width: 800px;
-            margin: 0 auto;
+            padding-left: 80px;
         }
-        
+
         .timeline::before {
             content: '';
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
         }
-        
+
         .timeline-item {
             position: relative;
-            margin: 2rem 0;
-            padding: 0 2rem;
+            margin-bottom: 3rem;
         }
-        
+
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            top: 1rem;
-            border: 4px solid var(--bg-color);
-            box-shadow: 0 0 0 4px var(--primary-color);
-        }
-        
-        .timeline-content {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            margin-left: 3rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .timeline-content::before {
-            content: '';
-            position: absolute;
+            left: -57px;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 4px solid var(--dark-bg);
+            z-index: 2;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
         }
-        
+
+        .timeline-item:nth-child(1)::before {
+            width: 32px;
+            height: 32px;
+            left: -61px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            animation: pulse-gold 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.6), 0 0 20px rgba(251, 191, 36, 0.4); }
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.02));
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
         .timeline-content:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+            transform: translateX(10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
         }
-        
+
         @media (max-width: 768px) {
+            .timeline {
+                padding-left: 60px;
+            }
+
             .timeline::before {
-                left: 2rem;
+                left: 20px;
             }
-            
+
             .timeline-item::before {
-                left: 2rem;
+                left: -47px;
             }
-            
-            .timeline-content {
-                margin-left: 4rem;
+
+            .timeline-item:nth-child(1)::before {
+                left: -51px;
             }
         }
         
@@ -1111,9 +1115,47 @@
             color: var(--text-secondary);
             margin-left: 0.5rem;
         }
+
+        /* === GLOW ANIMATION FOR GOLD KAIZEN BADGE === */
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 30px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.5);
+            }
+        }
+
+        /* === INTERACTIVE BACKGROUND === */
+        body {
+            position: relative;
+        }
+
+        .section {
+            position: relative;
+            z-index: 2;
+        }
+
+        #particlesCanvas {
+            opacity: 0.6;
+        }
+
+        /* Parallax Layers */
+        .parallax-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body data-theme="dark" data-lang="pt">
+    <!-- Interactive Background Canvas -->
+    <canvas id="particlesCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+    <div id="cursorGlow" style="position: fixed; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%); pointer-events: none; z-index: 1; transform: translate(-50%, -50%); transition: opacity 0.3s;"></div>
+
     <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
 
@@ -1144,6 +1186,15 @@
             <div class="grid hero-content">
                 <div class="hero-text slide-in-left">
                     <h1 id="typewriter">Matheus Sousa Beck</h1>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+                        <div style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 2rem; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); animation: glow 2s ease-in-out infinite;">
+                            <span style="font-size: 1.75rem;">🏆</span>
+                            <div>
+                                <div style="font-weight: 700; color: #000; font-size: 0.875rem;">Gold Kaizen Award</div>
+                                <div style="font-size: 0.75rem; color: #000; opacity: 0.8;">Raízen 2024</div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="subtitle" data-i18n="hero.subtitle">Data Solutions Engineer • Python Full Stack Developer</p>
                     <p class="description" data-i18n="hero.description">
                         Arquiteto de soluções empresariais na <strong>RAÍZEN</strong>, maior empresa de energia do Brasil. Criador do <strong>CIA BOT Suite</strong> — um ecossistema de 135+ automações inteligentes que economizam <strong>5.000+ horas mensais</strong>, atendem <strong>200+ analistas 24/7</strong> e transformaram operações em 28+ unidades.<br><br><strong>800% performance</strong> • <strong>R$ 2M+ economizados/ano</strong> • <strong>97%+ uptime</strong> • <strong>12 sistemas integrados</strong> • <strong>Gold Kaizen Award 2024 🏆</strong>
@@ -1230,6 +1281,63 @@
                             <span class="tech-badge">Strategic Planning</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Impact Dashboard -->
+    <section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); position: relative; overflow: hidden;">
+        <div class="container">
+            <div class="fade-in" style="text-align: center; margin-bottom: 3rem;">
+                <h2 class="section-title" style="color: var(--primary-color);">Impacto Mensurável de Negócio</h2>
+                <p class="section-subtitle">ROI Consolidado de Todos os Projetos</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;" class="fade-in">
+                <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05)); border-radius: 1rem; border: 2px solid rgba(34, 197, 94, 0.3);">
+                    <div style="font-size: 3.5rem; font-weight: bold; color: #22c55e; margin-bottom: 1rem;">R$ 2M+</div>
+                    <div style="font-size: 1.125rem; color: var(--text-secondary);">Economia Anual</div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">~$400K USD/ano</div>
+                </div>
+
+                <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05)); border-radius: 1rem; border: 2px solid rgba(251, 191, 36, 0.3);">
+                    <div style="font-size: 3.5rem; font-weight: bold; color: #fbbf24; margin-bottom: 1rem;">800%</div>
+                    <div style="font-size: 1.125rem; color: var(--text-secondary);">Performance Boost</div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">3min → 20seg queries</div>
+                </div>
+
+                <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05)); border-radius: 1rem; border: 2px solid rgba(37, 99, 235, 0.3);">
+                    <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); margin-bottom: 1rem;">200+</div>
+                    <div style="font-size: 1.125rem; color: var(--text-secondary);">Usuários Ativos</div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">Operação 24/7</div>
+                </div>
+            </div>
+
+            <!-- Comparação Antes/Depois Visual -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;" class="fade-in">
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem;">
+                    <h3 style="color: #ef4444; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">❌</span> Antes
+                    </h3>
+                    <ul style="list-style: none; padding: 0; space-y: 0.75rem;">
+                        <li style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; margin-bottom: 0.75rem;">Processos manuais em Excel</li>
+                        <li style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; margin-bottom: 0.75rem;">3+ minutos por consulta</li>
+                        <li style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; margin-bottom: 0.75rem;">Dados desatualizados</li>
+                        <li style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">Retrabalho constante</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem;">
+                    <h3 style="color: #22c55e; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">✅</span> Depois (CIA BOT Suite)
+                    </h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; margin-bottom: 0.75rem;">Automação completa 24/7</li>
+                        <li style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; margin-bottom: 0.75rem;">20 segundos por consulta</li>
+                        <li style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; margin-bottom: 0.75rem;">Dados em tempo real</li>
+                        <li style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e;">97%+ uptime confiável</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1871,147 +1979,6 @@
                         value: 'Piracicaba, São Paulo • Brasil'
                     }
                 }
-            },
-            en: {
-                nav: {
-                    home: 'Home',
-                    timeline: 'Timeline',
-                    dataEngineering: 'Data Engineering',
-                    fullstack: 'Python Fullstack',
-                    blog: 'Blog',
-                    contact: 'Contact'
-                },
-                hero: {
-                    subtitle: 'Data Solutions Engineer • Python Full Stack Developer',
-                    description: 'Enterprise solutions architect at <strong>RAÍZEN</strong>, Brazil\'s largest energy company. Creator of <strong>CIA BOT Suite</strong> — an ecosystem of 135+ intelligent automations saving <strong>5,000+ monthly hours</strong>, serving <strong>200+ analysts 24/7</strong>, and transforming operations across 28+ units.<br><br><strong>800% performance</strong> • <strong>$400K+ saved/year</strong> • <strong>97%+ uptime</strong> • <strong>12 integrated systems</strong> • <strong>Gold Kaizen Award 2024 🏆</strong>',
-                    cta1: 'See real impact',
-                    cta2: 'Let\'s talk'
-                },
-                timeline: {
-                    title: 'Digital Transformation at RAÍZEN',
-                    current: {
-                        title: 'Data Solutions Engineer • RAÍZEN • Current',
-                        subtitle: 'Architect of CIA BOT Suite — Enterprise-scale automation ecosystem',
-                        description: 'Created and manage the <strong>CIA BOT Suite</strong>, complete platform with 11 integrated modules: automated ETL (15 systems), 5 Flask/React web portals, 3 operational Telegram bots, 40 data pipelines, and 20 RPA scripts. Full-stack integration with Azure, ServiceNow, SharePoint, MaxTrack, SGPA3, Hexagon Agron. <strong>Results:</strong> 5,000+ hours/month saved, 200+ active users 24/7, 97%+ uptime, 25 monitored mills. <strong>Recognition:</strong> Gold Kaizen Award 2024 for dispatch bot.'
-                    },
-                    education: {
-                        title: 'Software Engineering • Wyden • In Progress (2024-2028)',
-                        subtitle: 'Applying theoretical foundations to production projects',
-                        description: 'Combining academic learning with hands-on experience in large-scale systems. Applying software architecture concepts, design patterns, and data engineering in real solutions at RAÍZEN.'
-                    },
-                    previous: {
-                        title: 'Previous Experience: Líder Alimentos + RAÍZEN (2016-2022)',
-                        subtitle: 'Foundations in data analysis and logistics optimization',
-                        description: '6+ years optimizing operations through data analysis and strategic planning. Reduced milk transportation losses by 60%, increased transported volume by 16%, and developed analytical dashboards for data-driven decision making.'
-                    }
-                },
-                dataEngineering: {
-                    title: 'CIA BOT Suite — Enterprise Automation Ecosystem',
-                    subtitle: 'Complete automation platform integrating 12+ systems at enterprise scale with measurable ROI',
-                    resultsTitle: 'Measurable Business Impact',
-                    result1: 'Performance improvement (3min → 20sec)',
-                    result2: 'Hours saved (≈ $400K+/year)',
-                    result3: 'Availability on critical systems'
-                },
-                terminal: {
-                    tab1: 'Data Warehouse',
-                    tab2: 'CIA BOT Suite',
-                    tab3: 'Telegram Bot'
-                },
-                fullstack: {
-                    title: 'Python Fullstack Portfolio',
-                    subtitle: 'High-availability web applications that transformed RAÍZEN operations'
-                },
-                projects: {
-                    nav: {
-                        overview: 'Overview',
-                        results: 'Results',
-                        tech: 'Tech'
-                    },
-                    dashboard: {
-                        title: 'CCT Trucks Dashboard',
-                        subtitle: 'React + Python Web Portal — Real-Time Logistics',
-                        description: 'Full-stack web portal for complete visibility of sugarcane transport operations across 25 mills. Integrates Parquet, SQLite and API data into responsive dashboard with dynamic filters. Real-time delay tracking, route optimization, industrial performance module. Stack: Flask, React, Pandas, Parquet, Azure.',
-                        status: 'Live 24/7',
-                        reduction: 'reduction in',
-                        metric: 'truck shortage index',
-                        features: 'Multi-source integration • Real-time updates • 25 monitored mills'
-                    },
-                    maintenance: {
-                        title: 'Maintenance System',
-                        subtitle: 'Complete Maintenance Workflow Automation',
-                        description: 'Flask system integrated with operational dashboards for end-to-end maintenance management. Automated extraction from SGPA3, PSA and A3F via Selenium + APIs. Real-time WhatsApp/Telegram notifications to approvers. Complete lifecycle tracking with SLA and performance metrics. Eliminated manual bottlenecks in approval workflows.',
-                        reduction1: 'reduction in',
-                        improvement: 'improvement in',
-                        metric1: 'work order resolution time',
-                        metric2: 'maintenance scheduling',
-                        feature1: 'Automatic WhatsApp notifications',
-                        feature2: 'Complete work order lifecycle tracking'
-                    },
-                    dto: {
-                        title: 'DTO Portal — Evaluations',
-                        subtitle: 'Performance Analytics Platform',
-                        description: 'Complete Flask portal for dual technical evaluations (remote audits + on-site DTOs). Automatic pairing system, multi-worksheet Excel report generation, visual analytics by shift/analyst/topic. Parquet persistence for big data analytics. Completely replaced manual paper process, digitizing 100% of evaluations with real-time dashboards.',
-                        adoption: 'Adoption Rate',
-                        digitized: 'Digitized Evaluations',
-                        all: '100% Digital',
-                        analytics: 'Real-Time Dashboards',
-                        implemented: 'Production 24/7'
-                    },
-                    links: {
-                        title: 'SharePoint Links Portal',
-                        subtitle: 'Secure Microsoft Graph API Integration',
-                        description: 'Flask portal integrated with SharePoint/OneDrive via Microsoft Graph API and PowerShell. Automatic file upload with OneDrive sync, programmatic shareable link generation (view/edit, org-only/anonymous), expiration management, password protection. OAuth 2.0 authentication, automatic retry with exponential backoff. Full compliance with corporate security policies.'
-                    },
-                    telegram: {
-                        title: 'Telegram Dispatch Bot',
-                        subtitle: 'Mobile Operational Intelligence — 🏆 Gold Kaizen 2024',
-                        description: 'Python bot awarded with <strong>Raízen Gold Kaizen 2024</strong>. Real-time dispatch queries via Telegram for field supervisors. Integration with ÁGUIA system (hybrid Parquet + SQLite). Automatic PNG report generation optimized for outdoor reading. Authentication via employee ID + birth date. Intuitive button-based interface. Processing 1,000+ daily queries with complete SQLite audit trail.',
-                        reduction: 'reduction in',
-                        metric1: 'field operational decision time',
-                        units: 'units',
-                        metric2: 'agricultural connected to system',
-                        feature: '1,000+ daily queries via mobile'
-                    }
-                },
-                blog: {
-                    title: 'Technical Insights',
-                    subtitle: 'Sharing learnings from real projects at RAÍZEN',
-                    post1: {
-                        date: 'December 2024',
-                        read: '8 min read',
-                        title: 'How I Achieved 800% Improvement with Parquet on Azure',
-                        excerpt: 'Deep dive into the Data Warehouse architecture that transformed our Power BI dashboards from minutes to seconds loading time, using advanced optimization techniques.'
-                    },
-                    post2: {
-                        date: 'November 2024',
-                        read: '10 min read',
-                        title: 'CIA BOT Suite: 11-Module Architecture Saving $400K+/Year',
-                        excerpt: 'Technical deep dive into the complete ecosystem: 11 integrated repositories, 15 ETL modules, 5 Flask/React portals, 3 Telegram bots, 40 data pipelines. How I architected a system that transformed 135+ manual processes into intelligent automation with 97%+ uptime and measurable ROI. Complete stack: Python, Flask, React, Azure, Parquet, Selenium, APScheduler.'
-                    },
-                    post3: {
-                        date: 'October 2024',
-                        read: '7 min read',
-                        title: 'Watchdog Architecture: 97%+ Uptime in Critical Systems',
-                        excerpt: 'Resilient architecture strategies that transformed unstable systems into high-availability solutions with self-recovery and proactive monitoring.'
-                    }
-                },
-                contact: {
-                    title: 'Let\'s Build Something Together',
-                    subtitle: 'Interested in robust Data Engineering or Python Fullstack solutions? Let\'s talk!',
-                    form: {
-                        name: 'Name',
-                        company: 'Company',
-                        message: 'Message',
-                        placeholder: 'Tell me about your project or opportunity...',
-                        submit: 'Send Message'
-                    },
-                    phone: 'Phone',
-                    location: {
-                        title: 'Location',
-                        value: 'Piracicaba, São Paulo • Brazil'
-                    }
-                }
             }
         };
 
@@ -2078,74 +2045,6 @@
                     '<span class="terminal-warning">→ Processing incoming query...</span>',
                     '<span class="terminal-output">User: Field Supervisor - Unit 15</span>',
                     '<span class="terminal-output">Query: Status frente Norte</span>',
-                    '<span class="terminal-success">✓ Report generated and sent</span>',
-                    '',
-                    '<span class="terminal-warning">→ Daily statistics...</span>',
-                    '<span class="terminal-success">✓ Queries processed today: 1,032</span>',
-                    '<span class="terminal-success">✓ Decision time reduced: 65%</span>',
-                    '',
-                    '<span style="color: #3b82f6;">📱 Telegram bot transforming field operations!</span>',
-                    '<span style="color: #3b82f6;">🏭 26 agricultural units connected</span>'
-                ]
-            },
-            en: {
-                parquet: [
-                    '$ python azure_parquet_migration.py --optimize',
-                    '<span class="terminal-success">✓ Connecting to Azure Data Lake...</span>',
-                    '<span class="terminal-warning">→ Analyzing current data structure...</span>',
-                    '<span class="terminal-output">Detected: 2.3TB structured data</span>',
-                    '',
-                    '$ python optimize_parquet_schema.py',
-                    '<span class="terminal-warning">→ Applying snappy compression...</span>',
-                    '<span class="terminal-warning">→ Optimizing columnar structure...</span>',
-                    '<span class="terminal-success">✓ Storage reduction: 60% achieved</span>',
-                    '',
-                    '$ python test_performance.py --power-bi',
-                    '<span class="terminal-warning">→ Testing analytical queries...</span>',
-                    '<span class="terminal-success">✓ Loading time: 3min → 20sec</span>',
-                    '<span class="terminal-success">✓ Performance improvement: 800%</span>',
-                    '',
-                    '<span style="color: #3b82f6;">🚀 Data Warehouse optimized successfully!</span>',
-                    '<span style="color: #3b82f6;">📊 Power BI dashboards now load in seconds</span>'
-                ],
-                cia: [
-                    '$ python cia_bot_orchestrator.py --status',
-                    '<span class="terminal-success">✓ CIA BOT Control Center Online</span>',
-                    '<span class="terminal-output">Total Scripts: 135</span>',
-                    '<span class="terminal-output">Active: 132 | Standby: 3</span>',
-                    '',
-                    '<span class="terminal-warning">→ Scanning automation processes...</span>',
-                    '<span class="terminal-output">ETL Pipelines: 40 running</span>',
-                    '<span class="terminal-output">Report Generators: 35 active</span>',
-                    '<span class="terminal-output">Process Automations: 25 executing</span>',
-                    '<span class="terminal-output">API Integrations: 20 connected</span>',
-                    '<span class="terminal-output">Web Applications: 15 serving</span>',
-                    '',
-                    '$ python calculate_savings.py --monthly',
-                    '<span class="terminal-warning">→ Calculating operational savings...</span>',
-                    '<span class="terminal-success">✓ Hours saved this month: 5,247</span>',
-                    '<span class="terminal-success">✓ Analysts supported: 200+</span>',
-                    '<span class="terminal-success">✓ 24/7 operation maintained</span>',
-                    '',
-                    '<span style="color: #3b82f6;">🤖 CIA BOT ecosystem running perfectly!</span>',
-                    '<span style="color: #3b82f6;">⚡ Enterprise automation at scale</span>'
-                ],
-                telegram: [
-                    '$ python telegram_dispatch_bot.py --deploy',
-                    '<span class="terminal-success">✓ Bot token validated</span>',
-                    '<span class="terminal-success">✓ Webhook configured on Azure</span>',
-                    '<span class="terminal-warning">→ Connecting to dispatch database...</span>',
-                    '',
-                    '<span class="terminal-output">Bot: @raizen_dispatch_bot is live!</span>',
-                    '<span class="terminal-output">Agricultural units connected: 26</span>',
-                    '<span class="terminal-output">Features available:</span>',
-                    '<span class="terminal-output">  📊 Real-time dispatch queries</span>',
-                    '<span class="terminal-output">  📱 Mobile-optimized interface</span>',
-                    '<span class="terminal-output">  🖼️ Automated report generation</span>',
-                    '',
-                    '<span class="terminal-warning">→ Processing incoming query...</span>',
-                    '<span class="terminal-output">User: Field Supervisor - Unit 15</span>',
-                    '<span class="terminal-output">Query: North front status</span>',
                     '<span class="terminal-success">✓ Report generated and sent</span>',
                     '',
                     '<span class="terminal-warning">→ Daily statistics...</span>',
@@ -2448,74 +2347,6 @@
                         `
                     }
                 }
-            },
-            en: {
-                dashboard: {
-                    overview: {
-                        content: `
-                            <p><strong>Real-Time Logistics Monitoring Dashboard</strong></p>
-                            <p>Web system for complete logistics flow visibility, tracking truck delays and optimizing routes. 
-                            Includes industrial performance and autonomy module for strategic decision making.</p>
-                            <div class="project-demo" style="margin-top: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                                    <div style="color: var(--success-color);">● System Online</div>
-                                    <div><strong>8% reduction</strong> truck shortage index</div>
-                                </div>
-                                <div style="background: var(--success-color); height: 4px; border-radius: 2px; margin-bottom: 0.5rem;"></div>
-                                <div style="font-size: 0.875rem; color: var(--text-secondary);">
-                                    Reliable database • Optimized performance • Multi-filters
-                                </div>
-                            </div>
-                        `
-                    },
-                    demo: {
-                        content: `
-                            <h4 style="margin-bottom: 1rem;">Measurable Results</h4>
-                            <div style="display: grid; gap: 1rem;">
-                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
-                                    <h5 style="color: var(--success-color); margin-bottom: 0.5rem;">8% Reduction in Truck Shortage Index</h5>
-                                    <p style="font-size: 0.875rem;">Primary operational KPI significantly improved through real-time visibility.</p>
-                                </div>
-                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
-                                    <h5 style="color: var(--primary-color); margin-bottom: 0.5rem;">Reliable Database</h5>
-                                    <p style="font-size: 0.875rem;">Complete correction of flawed manual processes, creating single source of truth.</p>
-                                </div>
-                                <div style="padding: 1rem; background: var(--bg-color); border-radius: 0.5rem;">
-                                    <h5 style="color: var(--warning-color); margin-bottom: 0.5rem;">Multi-Page Interface</h5>
-                                    <p style="font-size: 0.875rem;">Specialized dashboards for different operations with advanced filters.</p>
-                                </div>
-                            </div>
-                        `
-                    },
-                    tech: {
-                        content: `
-                            <h4 style="margin-bottom: 1rem;">Technical Stack</h4>
-                            <div style="margin-bottom: 1.5rem;">
-                                <p><strong>Frontend:</strong></p>
-                                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                                    <li>Vanilla JavaScript for maximum performance</li>
-                                    <li>Responsive HTML5 + CSS3</li>
-                                    <li>Chart.js for interactive visualizations</li>
-                                    <li>WebSockets for real-time updates</li>
-                                </ul>
-                                
-                                <p><strong>Backend:</strong></p>
-                                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                                    <li>Python Flask for RESTful APIs</li>
-                                    <li>Optimized data processing pipeline</li>
-                                    <li>Integration with legacy systems</li>
-                                </ul>
-                                
-                                <p><strong>Data:</strong></p>
-                                <ul style="margin-left: 1.5rem;">
-                                    <li>Parquet files for performance</li>
-                                    <li>Automatic data updates</li>
-                                    <li>Automated validation and cleaning</li>
-                                </ul>
-                            </div>
-                        `
-                    }
-                }
             }
         };
 
@@ -2656,125 +2487,6 @@
                         <p>Esta transformação demonstrou como padrões de engenharia de confiabilidade podem transformar sistemas críticos, elevando a operação de reativa para proativa.</p>
                     `
                 }
-            },
-            en: {
-                'parquet-optimization': {
-                    title: 'How I Achieved 800% Performance Improvement with Parquet on Azure',
-                    content: `
-                        <h1>How I Achieved 800% Performance Improvement with Parquet on Azure</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">December 2024 • 8 min leitura • RAÍZEN</div>
-                        
-                        <p>When I took responsibility for RAÍZEN's Data Warehouse, our Power BI dashboards were taking over 3 minutes to load. For a 24/7 operation that depends on real-time decisions, this was unacceptable.</p>
-                        
-                        <h2>The Challenge at RAÍZEN</h2>
-                        <p>As Brazil's largest energy company, RAÍZEN processes massive volumes of operational data:</p>
-                        <ul>
-                            <li>2.3TB of real-time structured data</li>
-                            <li>200+ analysts depending on updated dashboards</li>
-                            <li>24/7 operation where seconds matter</li>
-                            <li>Multiple data sources with different structures</li>
-                        </ul>
-                        
-                        <h2>The Solution: Parquet Architecture on Azure</h2>
-                        <p>I implemented a complete migration to Apache Parquet on Azure Data Lake, focusing on performance optimization and cost reduction.</p>
-                        
-                        <h2>Transformative Results</h2>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
-                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
-                                <h4 style="color: var(--success-color);">800% Performance Improvement</h4>
-                                <p>3 minutes → 20 seconds loading time</p>
-                            </div>
-                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
-                                <h4 style="color: var(--primary-color);">60% Storage Reduction</h4>
-                                <p>Smart compression without data loss</p>
-                            </div>
-                            <div style="padding: 1rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--border);">
-                                <h4 style="color: var(--warning-color);">Complex Queries Enabled</h4>
-                                <p>Previously impossible analyses now routine</p>
-                            </div>
-                        </div>
-                        
-                        <p>This optimization completely transformed our analytical capabilities, establishing a new solid foundation for all data initiatives at RAÍZEN.</p>
-                    `
-                },
-                'cia-automation': {
-                    title: 'CIA BOT: 135 Automations Saving 5,000+ Hours Monthly',
-                    content: `
-                        <h1>CIA BOT: 135 Automations Saving 5,000+ Hours Monthly</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">November 2024 • 10 min leitura • RAÍZEN</div>
-                        
-                        <p>CIA BOT is my most ambitious project at RAÍZEN: an ecosystem of 135+ automations that revolutionized our 24/7 operation, saving over 5,000 monthly hours of manual work.</p>
-                        
-                        <h2>The Challenge: Manual Operations at Industrial Scale</h2>
-                        <p>RAÍZEN operates 200+ analysts in 24/7 shifts. Before CIA BOT:</p>
-                        <ul>
-                            <li>Repetitive manual processes consumed 40%+ of analysts' time</li>
-                            <li>Reports generated individually with high error rates</li>
-                            <li>Lack of standardization between shifts and units</li>
-                            <li>Critical information lost between handoffs</li>
-                        </ul>
-                        
-                        <h2>Transformative Results</h2>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
-                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
-                                <div style="font-size: 3rem; color: var(--success-color); font-weight: bold;">5,000+</div>
-                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Hours Saved</div>
-                                <div style="color: var(--text-secondary);">Monthly in 24/7 operation</div>
-                            </div>
-                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
-                                <div style="font-size: 3rem; color: var(--primary-color); font-weight: bold;">200+</div>
-                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Analysts Impacted</div>
-                                <div style="color: var(--text-secondary);">Higher productivity and satisfaction</div>
-                            </div>
-                            <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1rem; border: 1px solid var(--border);">
-                                <div style="font-size: 3rem; color: var(--warning-color); font-weight: bold;">135+</div>
-                                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Active Automations</div>
-                                <div style="color: var(--text-secondary);">Complete ecosystem</div>
-                            </div>
-                        </div>
-                        
-                        <p>This project demonstrated how well-architected automation can transform industrial-scale operations, creating measurable and sustainable business value.</p>
-                    `
-                },
-                'watchdog-architecture': {
-                    title: 'Watchdog Architecture: 97%+ Uptime in Critical Systems',
-                    content: `
-                        <h1>Watchdog Architecture: 97%+ Uptime in Critical Systems</h1>
-                        <div style="margin-bottom: 2rem; color: var(--text-secondary);">October 2024 • 7 min leitura • RAÍZEN</div>
-                        
-                        <p>Transforming unstable systems into high-availability solutions was one of my biggest technical challenges at RAÍZEN. The Watchdog architecture migration elevated our uptime to 97%+.</p>
-                        
-                        <h2>The Problem: Unstable Critical Systems</h2>
-                        <p>Before Watchdog implementation, we faced:</p>
-                        <ul>
-                            <li>Frequent failures in critical Python scripts</li>
-                            <li>Constant manual intervention, including early morning calls</li>
-                            <li>Data loss during system failures</li>
-                            <li>Dashboards unavailable at critical moments</li>
-                        </ul>
-                        
-                        <h2>Transformative Results</h2>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
-                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--success-color); text-align: center;">
-                                <div style="font-size: 2.5rem; color: var(--success-color); font-weight: bold;">97%+</div>
-                                <div style="font-weight: 600;">Overall Uptime</div>
-                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Critical systems</div>
-                            </div>
-                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--primary-color); text-align: center;">
-                                <div style="font-size: 2.5rem; color: var(--primary-color); font-weight: bold;">90%</div>
-                                <div style="font-weight: 600;">Intervention Reduction</div>
-                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Manual eliminated</div>
-                            </div>
-                            <div style="padding: 1.5rem; background: var(--card-bg); border-radius: 0.5rem; border: 1px solid var(--warning-color); text-align: center;">
-                                <div style="font-size: 2.5rem; color: var(--warning-color); font-weight: bold;">0</div>
-                                <div style="font-weight: 600;">Early Morning Calls</div>
-                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Last 3 months</div>
-                            </div>
-                        </div>
-                        
-                        <p>This transformation demonstrated how reliability engineering patterns can transform critical systems, elevating operations from reactive to proactive.</p>
-                    `
-                }
             }
         };
 
@@ -2864,17 +2576,130 @@
                 const newLang = currentLang === 'pt' ? 'en' : 'pt';
                 switchLanguage(newLang);
             }
-            
+
             // Alt + T to switch theme
             if (e.altKey && e.code === 'KeyT') {
                 e.preventDefault();
                 themeToggle.click();
             }
-            
+
             // Escape to close modal
             if (e.code === 'Escape') {
                 closeBlogPost();
             }
+        });
+
+        // === INTERACTIVE BACKGROUND SYSTEM ===
+        const canvas = document.getElementById('particlesCanvas');
+        const ctx = canvas.getContext('2d');
+        const cursorGlow = document.getElementById('cursorGlow');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particles System
+        const particles = [];
+        const particleCount = 80;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around screen
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(37, 99, 235, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.strokeStyle = `rgba(37, 99, 235, ${0.15 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Cursor Glow Effect
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorGlow.style.left = mouseX + 'px';
+            cursorGlow.style.top = mouseY + 'px';
+            cursorGlow.style.opacity = '1';
+        });
+
+        // Parallax Scroll Effect
+        let scrollY = 0;
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+
+            // Adjust particle speed based on scroll
+            particles.forEach((particle, i) => {
+                particle.speedY = (Math.sin(scrollY * 0.001 + i) * 0.3);
+            });
+
+            // Change canvas opacity based on scroll position
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = (window.innerHeight - rect.top) / window.innerHeight;
+                    canvas.style.opacity = 0.3 + (progress * 0.3);
+                }
+            });
         });
     </script>
 </body>
